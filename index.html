@@ -1,0 +1,1171 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>章魚燒屋</title>
+<link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@500;700;900&display=swap" rel="stylesheet">
+<style>
+:root{--cream:#fff4dc;--ink:#2a1a10;--red:#c8382c;--gold:#ffcf6b;--wood:#4a3020}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--cream);font-family:'Zen Maru Gothic',system-ui,sans-serif;
+  background:radial-gradient(ellipse at 50% -10%,#6a4228,#24170f 65%);-webkit-tap-highlight-color:transparent}
+button{font-family:inherit;cursor:pointer}
+.noren{display:flex;justify-content:center;gap:6px}
+.noren span{background:var(--red);color:#fff;font-weight:900;font-size:clamp(18px,4vw,28px);width:clamp(52px,11vw,84px);
+  text-align:center;padding:10px 0 16px;border-radius:0 0 8px 8px;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18);
+  transform-origin:top;animation:sway 4s ease-in-out infinite}
+.noren span:nth-child(2){animation-delay:-1s}.noren span:nth-child(3){animation-delay:-2s}.noren span:nth-child(4){animation-delay:-3s}
+@keyframes sway{0%,100%{transform:rotate(-1.5deg)}50%{transform:rotate(1.5deg)}}
+.topbar{max-width:1200px;margin:10px auto 0;padding:0 16px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.stat{font-weight:900;font-size:16px;background:#3a2516;border:2px solid #7a5434;border-radius:99px;padding:4px 12px}
+.spacer{flex:1}
+.pill{background:#3a2516;color:var(--cream);border:2px solid #7a5434;border-radius:99px;padding:5px 12px;font-size:14px;font-weight:700}
+.pill.on{background:var(--gold);color:var(--ink);border-color:var(--gold)}
+.steps{max-width:1200px;margin:8px auto 0;padding:0 16px;font-size:13px;opacity:.8;line-height:1.6}
+.steps b{color:var(--gold)}
+
+/* ---------- queue ---------- */
+.street{max-width:1200px;margin:10px auto 0;padding:0 16px}
+.queueWrap{position:relative;background:linear-gradient(#3b2a1c 0 78%,#7a5434 78% 82%,#5a3b24 82%);border-radius:20px;
+  min-height:250px;overflow:hidden;box-shadow:inset 0 0 30px rgba(0,0,0,.4)}
+.lantern{position:absolute;top:6px;width:26px;height:34px;border-radius:12px;background:radial-gradient(circle at 50% 40%,#ffd36b,#e0502a 70%);
+  box-shadow:0 0 22px rgba(255,140,50,.6);animation:sway 3s ease-in-out infinite;transform-origin:top}
+.queue{position:relative;display:flex;align-items:flex-end;gap:10px;padding:12px 16px 14px;min-height:250px}
+.cus{position:relative;display:flex;flex-direction:column;align-items:center;flex:0 0 auto;width:auto;min-width:120px;transition:all .4s}
+.cus.front{width:auto;min-width:200px}
+.cus.enter{animation:enter .6s ease-out}
+@keyframes enter{from{transform:translateX(160px);opacity:0}}
+.cus.bye{animation:bye .6s ease-in forwards}
+@keyframes bye{to{transform:translateY(-30px);opacity:0}}
+.cus.angry{animation:angry .7s ease-in forwards}
+@keyframes angry{0%,30%{transform:translateX(0)}10%{transform:translateX(-8px)}20%{transform:translateX(8px)}to{transform:translateX(300px);opacity:0}}
+.face{font-size:44px;line-height:1;position:relative;animation:bob 2s ease-in-out infinite}
+.front .face{font-size:64px}
+@keyframes bob{50%{transform:translateY(-4px)}}
+.crown{position:absolute;top:-.55em;left:50%;transform:translateX(-50%);font-size:.5em}
+.boss .face{filter:drop-shadow(0 0 10px rgba(255,60,40,.9))}
+.mood{position:absolute;right:-6px;bottom:-4px;font-size:.38em}
+.mood.mad{animation:shake .3s infinite}
+@keyframes shake{25%{transform:translateX(-2px)}75%{transform:translateX(2px)}}
+.nm{font-size:12px;font-weight:700;margin-top:4px;white-space:nowrap}
+.pbar{width:80%;height:7px;background:rgba(0,0,0,.4);border-radius:4px;margin-top:4px;overflow:hidden}
+.pbar i{display:block;height:100%;border-radius:4px;background:#7ee07e}
+.bubble{position:relative;background:var(--cream);color:var(--ink);border-radius:14px;padding:6px 8px;margin-bottom:10px;
+  font-weight:700;font-size:13px;display:flex;flex-direction:column;gap:3px;align-items:center;box-shadow:0 3px 0 #c9a874;
+  animation:float 2.4s ease-in-out infinite}
+.bubble::after{content:"";position:absolute;bottom:-8px;left:50%;margin-left:-8px;border:8px solid transparent;border-bottom:0;border-top-color:var(--cream)}
+@keyframes float{50%{transform:translateY(-3px)}}
+.cus .bubble{font-size:16px;padding:8px 12px}
+.boss .bubble{background:#ffe1d8;box-shadow:0 3px 0 #c8382c;outline:2px solid #c8382c}
+.boss .bubble::after{border-top-color:#ffe1d8}
+.super .face{filter:drop-shadow(0 0 14px rgba(170,80,255,1)) drop-shadow(0 0 4px #fff);animation:bob 1s ease-in-out infinite}
+.super .bubble{background:#f1e2ff;box-shadow:0 3px 0 #7a2fb8;outline:3px solid #8a3fd0}
+.super .bubble::after{border-top-color:#f1e2ff}
+.super .btitle{color:#7a2fb8}
+.btitle{font-size:11px;color:#c8382c;letter-spacing:.1em}
+.brow{display:flex;flex-wrap:wrap;gap:4px 8px;justify-content:center;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:2px;white-space:nowrap}
+.chip .emo{font-size:1.15em}
+.chip .bit{transform:scale(1.5);margin:0 4px}
+.tk{display:inline-block;width:1em;height:1em;border-radius:50%;background:radial-gradient(circle at 35% 30%,#f8d48a,#d38a3a 50%,#8a4a1c);
+  box-shadow:inset 0 .25em 0 -.05em #5a2a12}
+.sc{position:relative;display:inline-block;width:22px;height:14px;border-radius:7px}
+.sc.no::after{content:"";position:absolute;left:-3px;right:-3px;top:50%;height:3px;margin-top:-1.5px;background:#e0302a;transform:rotate(-25deg);border-radius:2px}
+.cus:not(.front) .bubble{transform-origin:bottom}
+.empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;opacity:.6;font-size:15px}
+.freeBanner{display:none;background:var(--cream);color:var(--ink);border-radius:18px;padding:12px 16px;font-weight:700;font-size:16px}
+body.free .queueWrap{display:none} body.free .freeBanner{display:block}
+@media(max-width:640px){.cus:nth-child(n+3){display:none}.cus.front{width:210px}.cus{width:110px}}
+
+.layout{display:grid;grid-template-columns:minmax(0,1.3fr) 250px minmax(0,1fr);gap:16px;max-width:1200px;margin:0 auto;padding:14px 16px 40px;align-items:start}
+@media(max-width:1000px){.layout{grid-template-columns:minmax(0,1fr) 250px}.plate{grid-column:1/-1}}
+@media(max-width:640px){.layout{grid-template-columns:1fr}}
+.card{background:linear-gradient(#5a3b24,#43291a);border-radius:20px;padding:14px;box-shadow:0 6px 0 #2a1a10}
+.card h2{margin:0 0 10px;font-size:16px;letter-spacing:.1em;color:var(--gold)}
+
+/* ---------- pan ---------- */
+.pan{position:relative;background:linear-gradient(#34343a,#1a1a1e);border-radius:24px;padding:16px;display:grid;
+  grid-template-columns:repeat(4,1fr);gap:12px;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;
+  box-shadow:0 8px 0 #0d0d10,0 18px 40px rgba(255,110,20,var(--glow,.3));transition:box-shadow .4s}
+.hole{position:relative;aspect-ratio:1;border-radius:50%;cursor:pointer;
+  background:radial-gradient(circle at 50% 42%,#09090b 0 52%,#2c2c32 70%,#45454c 78%,#1b1b20 86%)}
+.ring{position:absolute;inset:0;transform:rotate(-90deg);pointer-events:none}
+.ring circle{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke .3s}
+.ball{position:absolute;inset:11%;border-radius:50%;overflow:hidden;display:none;pointer-events:none}
+.ball.liquid{box-shadow:inset 0 2px 6px rgba(0,0,0,.25)}
+.ball.dome{box-shadow:0 3px 5px rgba(0,0,0,.5),inset -3px -5px 8px rgba(0,0,0,.25)}
+.tops{position:absolute;inset:0}
+.tops>*{position:absolute;transform:translate(-50%,-50%) rotate(var(--r));animation:pop .25s ease-out}
+.hole{container-type:inline-size}
+.tops>.emo{font-size:33cqw}
+.tops>.bit{transform:translate(-50%,-50%) rotate(var(--r)) scale(2)}
+@keyframes pop{from{transform:translate(-50%,-50%) scale(0)}}
+.emo{font-size:clamp(11px,2.2vw,17px);line-height:1}
+.bit{display:block}
+.bit.ginger{width:9px;height:4px;background:#e8375a;border-radius:2px;box-shadow:5px 3px 0 #e8375a}
+.bit.negi{width:8px;height:8px;border-radius:50%;background:radial-gradient(circle,#eaf7cc 32%,#3e9b3a 38% 70%,transparent 72%);box-shadow:7px 4px 0 -1px #4fae45}
+.bit.tenkasu{width:8px;height:7px;background:#f2d27a;border-radius:40% 60% 50% 40%;box-shadow:inset -1px -1px 0 #c99a3c,6px 3px 0 -1px #f2d27a}
+.bit.mochi{width:10px;height:10px;background:#fffdf6;border-radius:3px;box-shadow:0 0 0 1px #e2d4b6}
+.smoke{position:absolute;left:50%;top:0;pointer-events:none;display:none}
+.smoke i{position:absolute;width:14px;height:14px;border-radius:50%;background:rgba(200,200,200,.45);filter:blur(3px);animation:smoke 1.4s linear infinite}
+.smoke i:nth-child(2){animation-delay:-.5s;left:-10px}.smoke i:nth-child(3){animation-delay:-1s;left:6px}
+@keyframes smoke{from{transform:translateY(10px) scale(.5);opacity:.9}to{transform:translateY(-34px) scale(1.6);opacity:0}}
+.panfoot{display:flex;gap:8px;align-items:center;margin-top:14px;flex-wrap:wrap}
+.flames{display:flex;gap:4px;height:22px;align-items:flex-end;margin-right:4px}
+.flames i{width:9px;border-radius:50% 50% 30% 30%;background:linear-gradient(#ffe36b,#ff6a1f 60%,#3a6bff);animation:flick .3s ease-in-out infinite alternate}
+.flames i:nth-child(2n){animation-delay:-.15s}
+@keyframes flick{to{transform:scaleY(.75)}}
+
+/* ---------- tool grid ---------- */
+.grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}
+.tool{min-width:0;background:var(--wood);color:var(--cream);border:2px solid transparent;border-radius:12px;padding:6px 2px;aspect-ratio:1/0.9;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;font-size:12px;font-weight:700;position:relative}
+.tool .ic{height:28px;display:flex;align-items:center;justify-content:center;font-size:26px}
+.tool .ic .bit{transform:scale(2.1)}
+.tool .ic .emo{font-size:inherit}
+.tool.on{border-color:var(--gold);background:#7a4c28;box-shadow:0 0 0 2px rgba(255,207,107,.3)}
+.tool kbd{position:absolute;top:3px;left:6px;font-size:10px;opacity:.5;font-family:inherit}
+.tool.act{background:#2e1e13;border-color:#6b4a2e}
+.panRow{display:block}
+#quick{display:none}
+.hint{font-size:12px;opacity:.75;line-height:1.6;margin-top:10px}
+
+/* ---------- plate ---------- */
+.plate svg{width:100%;display:block}
+.flake{transform-box:fill-box;transform-origin:50% 100%;animation:dance 1.1s ease-in-out infinite alternate}
+@keyframes dance{from{transform:rotate(-14deg) scaleY(.9)}to{transform:rotate(14deg) scaleY(1.1)}}
+.sauces{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:10px}
+.sbtn{background:#2e1e13;color:var(--cream);border:2px solid #6b4a2e;border-radius:12px;padding:6px 2px;font-size:13px;font-weight:700;
+  display:flex;flex-direction:column;align-items:center;gap:3px}
+.sbtn.on{border-color:var(--gold);background:#6b4426}
+.sw{width:22px;height:14px;border-radius:7px;display:block}
+.actions{display:flex;gap:8px;margin-top:10px}
+.big{flex:1;border:none;border-radius:14px;padding:12px;font-size:17px;font-weight:900}
+.serve{background:var(--gold);color:var(--ink);box-shadow:0 4px 0 #b88a2e}
+.serve:active{transform:translateY(3px);box-shadow:0 1px 0 #b88a2e}
+.ghost{flex:0 0 auto;background:#2e1e13;color:var(--cream);border:2px solid #6b4a2e}
+
+.toast{position:fixed;left:50%;top:18px;transform:translate(-50%,-90px);background:var(--cream);color:var(--ink);font-weight:700;
+  padding:8px 16px;border-radius:99px;box-shadow:0 4px 12px rgba(0,0,0,.4);transition:transform .25s;z-index:40;white-space:nowrap}
+.toast.show{transform:translate(-50%,0)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:30;padding:20px}
+.modal.show{display:flex}
+.res{background:var(--cream);color:var(--ink);border-radius:22px;padding:22px;max-width:380px;width:100%;text-align:center;animation:pop2 .3s ease-out}
+@keyframes pop2{from{transform:scale(.8);opacity:0}}
+.res .who{font-size:56px}
+.stars{font-size:34px;color:#f0a81e;letter-spacing:4px}
+.res .score{font-size:15px;color:#9a6a3a;margin:2px 0 8px}
+.res .say{font-size:17px;font-weight:700;line-height:1.6;background:#fff;border-radius:14px;padding:10px 12px;margin:8px 0}
+.res .sum{font-size:13px;color:#7a5a3a;line-height:1.6}
+.res .earn{font-size:20px;font-weight:900;color:#c8382c;margin:6px 0 12px}
+.pausebox{font-size:22px;font-weight:900}
+#undoDraw{display:none}
+body.free #undoDraw{display:block}
+body.free #plate{touch-action:none;cursor:crosshair}
+.evx{position:fixed;z-index:26;user-select:none;touch-action:manipulation}
+.evtroll{transform:translate(-50%,-50%);background:#fff3e0;color:#2a1a10;border:4px solid #c8382c;border-radius:18px;padding:10px 16px;text-align:center;cursor:pointer;box-shadow:0 8px 24px rgba(0,0,0,.5);min-width:220px}
+.evtroll .evface{font-size:46px;line-height:1.1}
+.evtroll .evtxt{font-weight:900;font-size:15px}
+.evtroll.hit{animation:evhit .15s}
+@keyframes evhit{50%{transform:translate(-50%,-50%) scale(.92) rotate(-4deg)}}
+.evbar{height:6px;background:rgba(0,0,0,.15);border-radius:3px;overflow:hidden;margin-top:6px}
+.evbar i{display:block;height:100%;width:100%;background:#c8382c}
+.evbanner{transform:translateX(-50%);background:#fff3e0;color:#2a1a10;border:3px solid #8a6a3a;border-radius:14px;padding:6px 12px;font-weight:900;font-size:14px;white-space:nowrap;pointer-events:none}
+.evspot{transform:translate(-50%,-50%);font-size:34px;cursor:pointer;filter:drop-shadow(0 0 6px #ffcf6b);animation:wob .5s ease-in-out infinite alternate}
+@keyframes wob{to{transform:translate(-50%,-50%) scale(1.15) rotate(10deg)}}
+.evcat{transform:translate(-50%,-50%) scaleX(-1);font-size:46px;cursor:pointer;filter:drop-shadow(0 0 8px rgba(255,255,255,.7))}
+
+.topbar .pill{display:inline-flex;align-items:center;gap:4px;color:var(--cream)}
+.topbar .pill .ic{color:var(--gold);flex:none}
+.pbars.sm{display:block;width:12px;height:14px;border-left:4px solid var(--gold);border-right:4px solid var(--gold);border-radius:1px}
+#volPop{position:fixed;top:52px;right:12px;z-index:28;display:none;align-items:center;gap:8px;background:#3a2516;border:2px solid #7a5434;
+  border-radius:14px;padding:8px 12px;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+#volPop.show{display:flex}
+#volPop{flex-direction:column;align-items:stretch}
+.vrow{display:flex;align-items:center;gap:8px}
+.vrow b{font-size:13px;width:30px}
+.vbtn{flex:1;white-space:nowrap;font-size:12px!important;background:#2e1e13!important;color:var(--cream);border:2px solid #6b4a2e!important;border-radius:10px;padding:5px 6px!important;font-weight:700}
+.vname{font-size:11px;opacity:.7;text-align:center;max-width:280px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#volPop button{background:none;border:none;font-size:20px;padding:0}
+#volR,#bgmR{width:150px;accent-color:#ffcf6b}
+#volN,#bgmN{font-weight:700;font-size:13px;min-width:38px;text-align:right}
+@media(max-width:640px){#volPop{top:40px;right:8px}#volR,#bgmR{width:130px}}
+.toast.warn{background:#c8382c;color:#fff;font-size:16px;padding:10px 18px}
+#help{display:none}
+#burger,#drawer{display:none}
+#drawer{position:fixed;inset:0;z-index:26;pointer-events:none}
+#drawer .dback{position:absolute;inset:0;background:rgba(0,0,0,.45);opacity:0;transition:opacity .25s}
+#drawer .dpanel{position:absolute;top:0;right:0;bottom:0;width:min(240px,70vw);background:linear-gradient(#4a3020,#2e1e13);border-left:2px solid #7a5434;
+  box-shadow:-8px 0 24px rgba(0,0,0,.5);transform:translateX(100%);transition:transform .25s ease-out;padding:14px 12px;display:flex;flex-direction:column;gap:8px}
+#drawer.open{pointer-events:auto}#drawer.open .dback{opacity:1}#drawer.open .dpanel{transform:none}
+.dpanel h3{margin:4px 4px 6px;color:var(--gold);font-size:16px;letter-spacing:.1em}
+.ditem{display:flex;align-items:center;gap:12px;width:100%;background:#2e1e13;color:var(--cream);border:2px solid #6b4a2e;border-radius:14px;
+  padding:13px 14px;font-size:16px;font-weight:700;text-align:left}
+.ditem span{width:28px;display:flex;align-items:center;justify-content:center;color:var(--gold)}
+.ditem.warn span{color:#ffb3a8}
+.dpanel h3{display:flex;align-items:center;gap:10px}
+.dpanel h3 .pbars{display:block;width:12px;height:15px;border-left:4px solid var(--gold);border-right:4px solid var(--gold)}
+.ditem.warn{border-color:#c8382c;background:#5a2018}
+@media(max-width:640px){
+  html,body{height:100%}
+  body{display:flex;flex-direction:column;height:100dvh;overflow:hidden;touch-action:manipulation}
+  .noren,.lantern,#statSL,.flames{display:none}
+  .topbar{flex:none;margin:6px 0 0;padding:0 8px;gap:4px;flex-wrap:nowrap;overflow-x:auto}
+  .stat{font-size:12px;padding:2px 7px;white-space:nowrap}
+  .pill{font-size:11px;padding:3px 7px;white-space:nowrap}
+  #restart,#menuBtn,#mute,#infoBtn,.topbar #pause{display:none!important}
+  #burger{display:inline-flex;align-items:center;justify-content:center;flex:none;width:42px;height:34px;padding:0;margin-right:2px}
+  .pbars{display:block;width:14px;height:16px;border-left:5px solid var(--gold);border-right:5px solid var(--gold);border-radius:1px}
+  #drawer{display:block}
+  .steps{display:none}
+  body.showHelp .steps{display:block;position:fixed;top:40px;left:8px;right:8px;z-index:25;background:#3a2516;border:2px solid #7a5434;
+    border-radius:12px;padding:10px 12px;font-size:12px;opacity:1;box-shadow:0 6px 20px rgba(0,0,0,.5)}
+  .street{flex:2 1 108px;min-height:108px;max-height:230px;display:flex;flex-direction:column;padding:0 8px;margin:6px 0 0;width:100%}
+  .topbar{width:100%}
+  .queueWrap{flex:1;min-height:0;height:auto;border-radius:14px;container-type:size}
+  .queue{min-height:0;height:100%;padding:4px 6px 6px;gap:6px}
+  .cus{width:auto;max-width:150px}.cus.front{width:auto;max-width:230px;flex:0 1 auto}
+  .cus:not(.front) .bubble{gap:1px;line-height:1.15}
+  .cus:not(.front) .bubble .brow{gap:0 4px}
+  .queue{align-items:center}
+  .cus{display:grid;grid-template-columns:auto minmax(0,1fr);grid-template-areas:"face bub" "bar bub" "nm bub";align-items:center;column-gap:8px}
+  .cus.front,.cus:not(.front){flex:1 1 0;max-width:none;min-width:0}
+  .cus:not(.front){flex-grow:.9}
+  .cus .face{grid-area:face;justify-self:center}.cus .pbar{grid-area:bar;width:44px;justify-self:center}.cus .nm{grid-area:nm;justify-self:center}
+  .cus .bubble{grid-area:bub;flex-direction:column;margin:0;justify-self:start;max-width:100%}
+  .cus .bubble::after{bottom:auto;top:50%;left:-7px;margin:-7px 0 0;border:7px solid transparent;border-left:0;border-right-color:var(--cream)}
+  .boss .bubble::after{border-top-color:transparent;border-right-color:#ffe1d8}
+  .cus .bubble{animation:none}
+  .cus:not(.front) .sc{width:19px;height:12px}
+  .cus:not(.front) .chip .bit{transform:scale(1.35);margin:0 3px}
+  .cus:not(.front) .btitle{font-size:10px}
+  .face{font-size:clamp(28px,22cqh,46px)}.front .face{font-size:clamp(36px,31cqh,66px)}
+  .bubble{flex-direction:row;flex-wrap:wrap;justify-content:center;gap:2px 8px;margin-bottom:7px}
+  .front .bubble{font-size:clamp(12px,8cqh,16px);padding:5px 9px}
+  .cus:not(.front) .bubble{font-size:clamp(12px,8cqh,16px);padding:5px 8px}
+  .btitle{width:100%;text-align:center}
+  .pbar{height:5px;margin-top:2px}.nm{font-size:10px;margin-top:1px}
+  .freeBanner{font-size:13px;padding:8px 12px;border-radius:12px}
+  .layout{flex:1 1 auto;min-height:0;width:100%;margin:0;display:flex;flex-direction:column;align-items:stretch;gap:6px;padding:6px 8px 8px}
+  .lbl{display:none}
+  .topbar .spacer{flex:1 0 0}
+  .topbar .pill{padding:3px 6px}
+  .card{padding:7px;border-radius:14px;box-shadow:0 3px 0 #2a1a10}
+  .card h2{display:none}
+  .layout>.card:first-child{flex:0 1 auto;min-height:0;display:flex;flex-direction:column}
+  .panArea{flex:1;min-height:0;container-type:size;display:flex;align-items:center;justify-content:center}
+  .panStack{display:flex;flex-direction:column;align-items:center}
+  .pan{width:min(100cqw,(100cqh - 54px)*1.3);padding:7px;gap:6px;border-radius:16px;box-shadow:0 5px 0 #0d0d10,0 10px 24px rgba(255,110,20,var(--glow,.3))}
+  .panfoot{flex:none;margin-top:10px;gap:10px;justify-content:center;flex-wrap:nowrap}
+  .panfoot .pill{font-size:15px;padding:7px 18px;border-width:2px}
+  .grid{grid-template-columns:repeat(20,minmax(0,1fr));gap:5px}
+  .grid .tool{grid-column:span 4}
+  .grid .tool:nth-child(n+6){grid-column:span 5}
+  .panRow{flex:0 1 auto;height:calc((100vw - 98px)*.77 + 58px);min-height:0;display:flex;gap:6px}
+  #quick{display:flex;flex-direction:column;justify-content:center;gap:5px;flex:0 0 62px;min-height:0}
+  #quick .tool{flex:1 1 0;min-height:0;max-height:84px;font-size:10px;padding:2px 0;overflow:hidden;transform:none}
+  #quick .tool .ic{font-size:22px;height:24px}
+  .tool{aspect-ratio:auto;padding:6px 0 5px;font-size:11px;border-radius:10px;gap:2px}
+  .tool.on{box-shadow:none}
+  .tool .ic{height:28px;font-size:25px}
+  .tool .ic .bit{transform:scale(2.1)}
+  .tool kbd,.hint{display:none}
+  .plate{flex:1 0 auto;max-height:230px;display:grid;grid-template-columns:1.9fr 1fr;grid-template-rows:1fr auto;grid-template-areas:"pl sa" "pl ac";gap:6px 8px;align-items:stretch}
+  .plate svg{width:100%;height:auto;align-self:center}
+  .plate svg{grid-area:pl}
+  .sauces{grid-area:sa;grid-template-columns:repeat(2,minmax(0,1fr));grid-auto-rows:1fr;gap:5px;margin:0}
+  .sbtn .sn{display:none}
+  .sbtn .sw{width:30px!important;height:18px!important;border-radius:9px}
+  .sbtn{flex-direction:row;justify-content:center;align-items:center;font-size:11px;padding:4px 1px;gap:3px;border-radius:9px;white-space:nowrap;min-height:30px}
+  .sbtn .sw{width:12px;height:9px;flex:none}
+  .actions{grid-area:ac;margin:0;gap:5px}
+  .big{padding:10px 6px;font-size:15px;border-radius:11px}
+  .res{padding:16px}
+}
+@media(max-width:640px) and (max-height:700px){
+  .plate svg{max-height:120px}
+  .panfoot{margin-top:6px}.panfoot .pill{padding:5px 16px;font-size:14px}
+  .sbtn{min-height:26px}.big{padding:8px 6px}
+  .layout{gap:5px}
+  #quick .tool .ic{font-size:18px;height:20px}
+  .tool .ic{height:22px;font-size:20px}
+  .grid .tool{padding:4px 0 3px}
+  .front .face{font-size:30px}.face{font-size:24px}
+  .front .bubble{font-size:11px;padding:4px 6px}
+}
+
+.cheer{display:flex;justify-content:center;align-items:flex-end;gap:4px;font-size:clamp(26px,8vw,34px);margin:-6px 0 2px;flex-wrap:nowrap;max-width:100%}
+.cheer .popper{font-size:1.1em}
+.fan{display:inline-block;animation:jump .6s ease-in-out infinite alternate}
+@keyframes jump{from{transform:translateY(0) rotate(-6deg)}to{transform:translateY(-14px) rotate(6deg)}}
+.popper{font-size:38px;display:inline-block;animation:popper .5s ease-out}
+.popper.l{transform:scaleX(-1)}
+@keyframes popper{0%{transform:scale(.2)}70%{transform:scale(1.3)}}
+.popper.l{animation-name:popperL}
+@keyframes popperL{0%{transform:scaleX(-1) scale(.2)}70%{transform:scaleX(-1) scale(1.3)}to{transform:scaleX(-1)}}
+.hooray{font-size:18px;font-weight:900;color:#c8382c;margin-bottom:4px;animation:pop2 .5s ease-out}
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:35}
+.res h1{margin:0 0 4px;font-size:28px;color:var(--red)}
+.res .sub{font-size:13px;color:#9a6a3a;margin-bottom:12px}
+.lv{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:#fff;border:2px solid #e2cfa6;border-radius:14px;
+  padding:10px 12px;margin-top:8px;color:var(--ink)}
+.lv:hover{border-color:var(--red);transform:translateY(-1px)}
+.lv .li{font-size:30px}
+.lv b{display:block;font-size:17px}
+.lv small{font-size:12px;color:#8a6a4a;line-height:1.5}
+.lv .best{margin-left:auto;font-size:12px;color:#c8382c;font-weight:700;white-space:nowrap}
+.row2{display:flex;gap:8px;margin-top:12px}
+.row2 .big{padding:11px 6px;font-size:15px}
+.ghost2{background:#efe2c4;color:var(--ink);box-shadow:0 4px 0 #c9a874}
+</style>
+</head>
+<body>
+<div class="noren"><span>章</span><span>魚</span><span>燒</span><span>屋</span></div>
+<div class="topbar">
+  <div class="stat">💰 <span id="coins">0</span></div>
+  <div class="stat" id="prog"></div>
+  <div class="stat" id="statSL" title="服務 / 氣走">😋 <span id="served">0</span>　😤 <span id="left">0</span></div>
+  <div class="spacer"></div>
+  <button class="pill" id="restart"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg><span class="lbl"> 重來</span></button>
+  <button class="pill" id="menuBtn"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3.5" width="15" height="17" rx="2.5"/><path d="M8.5 9h7M8.5 13h7M8.5 17h4"/></svg><span class="lbl"> 選單</span></button>
+  <button class="pill" id="help">❓</button>
+  <button class="pill" id="pause" aria-label="暫停"><svg class="ic" viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="5" width="4.2" height="14" rx="1" fill="currentColor"/><rect x="13.8" y="5" width="4.2" height="14" rx="1" fill="currentColor"/></svg></button>
+  <button class="pill" id="mute"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></button>
+  <button class="pill" id="infoBtn" aria-label="關於"><svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".7" fill="currentColor"/></svg></button>
+  <button class="pill" id="burger" aria-label="暫停選單"><i class="pbars"></i></button>
+</div>
+<div class="steps"><b>點空洞</b>倒麵糊 → 選配料<b>點進麵糊</b> → 邊緣金黃後<b>左鍵翻面</b>（選竹籤時，可來回翻）→ 兩面烤好<b>右鍵夾起</b>（手機：點兩下）→ 淋醬上菜。光環＝正在烤的那面：藍生、綠剛好、紅快焦。按住拖過多個洞可一次處理。</div>
+
+<div class="street">
+  <div class="queueWrap">
+    <div class="lantern" style="left:8%"></div><div class="lantern" style="left:48%;animation-delay:-1s"></div><div class="lantern" style="right:8%;animation-delay:-2s"></div>
+    <div class="queue" id="queue"></div>
+    <div class="empty" id="qEmpty">（目前沒有客人，等一下就會來了…）</div>
+  </div>
+  <div class="freeBanner">🧑‍🍳 自由烤模式：沒有客人也沒有時間限制，想加什麼就加什麼！</div>
+</div>
+
+<div class="layout">
+  <div class="card">
+    <h2>🔥 章魚燒鐵板</h2>
+    <div class="panRow"><div class="panArea"><div class="panStack"><div class="pan" id="pan"></div>
+    <div class="panfoot">
+      <div class="flames" id="flames"></div>
+      <button class="pill" data-heat="0.6">小火</button>
+      <button class="pill on" data-heat="1">中火</button>
+      <button class="pill" data-heat="1.6">大火</button>
+    </div></div></div><div id="quick"></div></div>
+  </div>
+
+  <div class="card">
+    <h2>🧺 配料</h2>
+    <div class="grid" id="grid"></div>
+    <div class="hint">🖱 左鍵：倒麵糊／加料／翻面<br>🖱 右鍵／點兩下：夾到盤子<br>⌨ 1–9 選料、Z 竹籤翻面、X 丟掉、C 全部倒滿</div>
+  </div>
+
+  <div class="card plate">
+    <h2>🍽 舟皿</h2>
+    <svg id="plate" viewBox="0 0 400 210"></svg>
+    <div class="sauces" id="sauces"></div>
+    <div class="actions">
+      <button class="big ghost" id="undoDraw" title="復原上一筆">↩</button>
+      <button class="big ghost" id="clearPlate">清盤</button>
+      <button class="big serve" id="serve">上菜！</button>
+    </div>
+  </div>
+</div>
+
+<div id="drawer"><div class="dback"></div><nav class="dpanel">
+  <h3><i class="pbars"></i>暫停中</h3>
+  <button class="ditem" data-act="resume"><span><svg viewBox="0 0 24 24" width="22" height="22"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg></span><b>繼續遊戲</b></button>
+  <button class="ditem" data-act="restart"><span><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg></span><b>重來</b></button>
+  <button class="ditem" data-act="menuBtn"><span><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3.5" width="15" height="17" rx="2.5"/><path d="M8.5 9h7M8.5 13h7M8.5 17h4"/></svg></span><b>選擇關卡</b></button>
+  <button class="ditem" data-act="mute"><span><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg></span><b>音量與音樂</b></button>
+  <button class="ditem" data-act="infoBtn"><span><svg class="ic" viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6"/><circle cx="12" cy="7.6" r=".7" fill="currentColor"/></svg></span><b>關於這個遊戲</b></button>
+  <button class="ditem" data-act="help"><span><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.6 2.6 0 1 1 3.6 2.4c-.7.3-1.1.9-1.1 1.7v.4"/><circle cx="12" cy="17" r=".6" fill="currentColor"/></svg></span><b>操作說明</b></button>
+</nav></div>
+<div class="toast" id="toast"></div>
+<div id="volPop">
+  <div class="vrow"><b>音效</b><button id="volMute" title="靜音">🔇</button><input type="range" id="volR" min="0" max="100" step="5"><span id="volN">70%</span></div>
+  <div class="vrow"><b>音樂</b><button id="bgmMute" title="關掉音樂">🔇</button><input type="range" id="bgmR" min="0" max="100" step="5"><span id="bgmN">50%</span></div>
+  <div class="vrow"><button class="vbtn" id="bgmStall">🎐 店內音樂</button><button class="vbtn" id="bgmBuilt">🏮 祭典曲</button><button class="vbtn" id="bgmPick">🎵 自己選</button></div>
+  <div class="vname" id="bgmName">播放中：店內音樂</div>
+  <div class="vname" style="opacity:.5">店內音樂：OpenTracks（舊 DOVA-SYNDROME）</div>
+  <input type="file" id="bgmFile" accept="audio/*" hidden>
+</div>
+<canvas id="confetti"></canvas>
+<div class="modal" id="modal"><div class="res" id="res"></div></div>
+
+<script>
+const ICO={restart:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg>',list:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="3.5" width="15" height="17" rx="2.5"/><path d="M8.5 9h7M8.5 13h7M8.5 17h4"/></svg>',vhi:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6M18 6.5a8 8 0 0 1 0 11"/></svg>',vlo:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M15.5 9a4.5 4.5 0 0 1 0 6"/></svg>',vmu:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9.5h3.5L12 5.5v13l-4.5-4H4z" fill="currentColor"/><path d="M16 9.5l5 5M21 9.5l-5 5"/></svg>',play:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18"><path d="M7 4.5v15l12-7.5z" fill="currentColor"/></svg>',pause:'<svg class="ic" viewBox="0 0 24 24" width="18" height="18"><rect x="6" y="5" width="4.2" height="14" rx="1" fill="currentColor"/><rect x="13.8" y="5" width="4.2" height="14" rx="1" fill="currentColor"/></svg>'};
+const TOPS=[
+ {id:'tako',name:'章魚',ic:'🐙'},
+ {id:'cabbage',name:'高麗菜',ic:'🥬'},
+ {id:'negi',name:'青蔥',bit:'negi'},
+ {id:'ginger',name:'紅薑',bit:'ginger'},
+ {id:'tenkasu',name:'天婦羅花',bit:'tenkasu'},
+ {id:'cheese',name:'起司',ic:'🧀'},
+ {id:'corn',name:'玉米',ic:'🌽'},
+ {id:'shrimp',name:'蝦仁',ic:'🦐'},
+ {id:'mochi',name:'麻糬',bit:'mochi'},
+];
+const TOP=Object.fromEntries(TOPS.map(t=>[t.id,t]));
+const SAUCES=[
+ {id:'sauce',name:'章魚燒醬',sw:'#5a2a12'},
+ {id:'mayo',name:'美乃滋',sw:'repeating-linear-gradient(90deg,#fffbe8 0 4px,#e8dcb8 4px 6px)'},
+ {id:'bonito',name:'柴魚片',sw:'linear-gradient(135deg,#f3c7b0,#d99a7c)'},
+ {id:'nori',name:'海苔粉',sw:'radial-gradient(circle,#2f6b2a 30%,#4f8f3a 32%)'},
+];
+const CUST=[['🐻','熊熊'],['🐱','小橘'],['🐰','兔兔'],['🦊','狐狸先生'],['🐼','胖達'],['🐸','呱呱'],['🐧','企鵝君'],['🐶','阿柴'],['🐨','無尾熊'],['🐹','倉鼠妹'],['🦝','浣熊大叔']];
+const BOSS=[['👹','大胃王魔王'],['🐲','美食龍王'],['🦁','挑嘴獅王'],['👺','天狗大人'],['🧛','吸血鬼伯爵'],['🦈','鯊魚大王'],['🧙','黑魔法師']];
+const SUPER=[['🐙','克蘇魯大王'],['🦖','暴食恐龍王'],['🐉','終焉之龍'],['👾','異次元吞噬者'],['🦑','深淵大王烏賊']];
+const RATE=7, NH=12, MAXP=8, QMAX=4;
+const topHTML=t=>t.ic?`<span class="emo">${t.ic}</span>`:`<i class="bit ${t.bit}"></i>`;
+const $=id=>document.getElementById(id);
+const rand=(a,b)=>a+Math.random()*(b-a);
+const ri=n=>Math.floor(Math.random()*n);
+const pick=a=>a[ri(a.length)];
+
+const LEVELS={
+ easy:  {icon:'🌱',label:'簡單',desc:'6 位客人・目標 💰100・客人很有耐心',total:6,target:100,pat:1.3,n:[3,5],k:[1,2],spawn:[16,24],angry:.10,wrong:.05,minA:5,minW:3,ev:{gap:[55,80],mash:6,spots:4,cat:4.2,t:6},boss:i=>false},
+ normal:{icon:'🔥',label:'中等',desc:'8 位客人・目標 💰200・最後一位是魔王',total:8,target:200,pat:1,n:[3,6],k:[1,3],spawn:[13,20],angry:.15,wrong:.10,minA:10,minW:5,ev:{gap:[40,60],mash:8,spots:5,cat:3.6,t:5.5},boss:i=>i===8},
+ hard:  {icon:'👹',label:'困難',desc:'10 位客人・目標 💰320・魔王常出沒、耐心少',total:10,target:320,pat:.8,n:[4,7],k:[2,3],spawn:[10,16],angry:.20,wrong:.15,minA:15,minW:8,ev:{gap:[30,45],mash:10,spots:6,cat:3,t:5},boss:i=>i%4===0||i===10},
+ hell:  {icon:'💀',label:'地獄',desc:'10 位客人全是魔王、偶爾來超級魔王・目標 💰620・客人接連上門',total:10,target:620,pat:.95,n:[8,8],k:[3,4],spawn:[15,22],angry:.20,wrong:.15,minA:15,minW:8,ev:{gap:[22,34],mash:12,spots:7,cat:2.6,t:4.5},boss:i=>true,superChance:.2},
+ endless:{icon:'♾️',label:'無限模式',desc:'3 顆愛心，氣走客人或做錯就扣一顆，越來越難，撐到失敗為止',total:Infinity,pat:1.05,n:[3,6],k:[1,3],spawn:[13,20],angry:.15,wrong:.10,minA:10,minW:5,hearts:3,ev:{gap:[45,65],mash:7,spots:5,cat:3.6,t:5.5},boss:i=>i>=4&&(i%6===0||Math.random()<.08)},
+ free:  {icon:'🧑‍🍳',label:'自由烤',desc:'沒有客人、沒有時間，想怎麼烤就怎麼烤'},
+};
+let tool=null, heat=1, mode='order', muted=false, paused=false, modalOpen=false;
+let plate={balls:[],sauce:{}};
+let inMenu=false;
+let coins=0, levelKey='normal', cfg=LEVELS.normal, game='menu', hearts=0;
+let happy=[];
+let served=0, leftN=0, spawnCount=0, nextSpawn=1.5;
+let best={}; try{best=JSON.parse(localStorage.getItem('tako_best')||'{}')}catch(e){}
+let queue=[];
+const holes=Array.from({length:NH},()=>({st:'empty',a:0,b:0,down:'a',fill:[],k:1,dirty:true}));
+
+/* ---------- colors ---------- */
+const STOPS=[[0,[248,234,188]],[35,[241,211,140]],[70,[228,162,74]],[105,[198,118,44]],[130,[118,60,24]],[170,[46,26,14]]];
+function col(d,shift=0){
+  d=Math.max(0,Math.min(170,d));
+  let i=0; while(i<STOPS.length-2&&d>STOPS[i+1][0])i++;
+  const [d0,c0]=STOPS[i],[d1,c1]=STOPS[i+1],t=(d-d0)/(d1-d0);
+  return `rgb(${c0.map((v,j)=>Math.round(Math.max(0,Math.min(255,v+(c1[j]-v)*t+shift))))})`;
+}
+
+/* ---------- pan ---------- */
+const pan=$('pan'), refs=[], C=2*Math.PI*47;
+holes.forEach((h,i)=>{
+  const el=document.createElement('div'); el.className='hole'; el.dataset.i=i;
+  el.innerHTML=`<svg class="ring" viewBox="0 0 100 100"><circle cx="50" cy="50" r="47" stroke-dasharray="0 ${C}"/></svg>
+    <div class="ball"><div class="tops"></div></div><div class="smoke"><i></i><i></i><i></i></div>`;
+  pan.appendChild(el);
+  refs.push({ring:el.querySelector('circle'),ball:el.querySelector('.ball'),tops:el.querySelector('.tops'),smoke:el.querySelector('.smoke')});
+});
+function draw(i){
+  const h=holes[i], r=refs[i];
+  if(h.st==='empty'){r.ball.style.display='none';r.ring.style.display='none';r.smoke.style.display='none';return}
+  r.ball.style.display='block'; r.ring.style.display='';
+  const d=h.down==='a'?h.a:h.b;
+  if(h.st==='batter'){
+    r.ball.className='ball liquid';
+    const inner=62-Math.min(h.a,110)*0.38;
+    r.ball.style.background=`radial-gradient(circle, ${col(Math.min(h.a*.2,28))} 0 ${inner}%, ${col(h.a)} ${inner+20}%)`;
+    r.tops.style.display='block';
+  }else{
+    r.ball.className='ball dome';
+    const top=h.down==='a'?h.b:h.a;
+    r.ball.style.background=`radial-gradient(circle at 36% 30%, ${col(top,40)} 0 12%, ${col(top)} 45%, ${col(top+25)} 95%)`;
+    r.tops.style.display='none';
+  }
+  if(h.dirty){
+    r.tops.innerHTML=h.fill.map(f=>topHTML(TOP[f.id]).replace(/^<(\w+) /,`<$1 style="left:${f.x}%;top:${f.y}%;--r:${f.r}deg" `)).join('');
+    h.dirty=false;
+  }
+  r.ring.style.strokeDasharray=`${Math.min(d,130)/130*C} ${C}`;
+  r.ring.style.stroke=d<60?'#8fbaff':d<=110?'#7ee07e':'#ff5a4a';
+  r.smoke.style.display=d>115?'block':'none';
+}
+
+/* ---------- actions ---------- */
+let toastT=0;
+let warnUntil=0;
+function toast(msg,ms=1500,warn=false){if(!warn&&performance.now()<warnUntil)return;if(warn)warnUntil=performance.now()+ms;const t=$('toast');t.textContent=msg;t.classList.toggle('warn',warn);t.classList.add('show');clearTimeout(toastT);toastT=setTimeout(()=>t.classList.remove('show'),ms)}
+function pour(h){Object.assign(h,{st:'batter',a:0,b:0,down:'a',fill:[],k:rand(.88,1.12),dirty:true})}
+function clearHole(h){Object.assign(h,{st:'empty',a:0,b:0,down:'a',fill:[],dirty:true})}
+function leftType(h){
+  if(tool==='trash') return 'trash';
+  if(h.st==='empty') return 'pour';
+  if(h.st==='batter'&&TOP[tool]) return 'top';
+  return 'flip';
+}
+function doAct(type,i,first){
+  if(paused||game!=='play'||inMenu) return;
+  const h=holes[i], say=m=>{if(first)toast(m)};
+  if(type==='pour'){ if(h.st==='empty'){pour(h);burst(.25,.5,1800)} }
+  else if(type==='top'){
+    if(h.st!=='batter') return;
+    if(h.fill.some(f=>f.id===tool)) return say(`這顆已經有${TOP[tool].name}了`);
+    if(h.fill.length>=4) return say('一顆最多塞 4 種料！');
+    h.fill.push({id:tool,x:rand(28,72),y:rand(28,72),r:Math.round(rand(-40,40))}); h.dirty=true; blip(500+h.fill.length*120);
+  }
+  else if(type==='flip'){
+    if(h.st==='empty') return;
+    if(h.st==='batter'&&h.a<35) return say('還沒定型，再等一下～');
+    if(h.st==='batter') h.st='ball';
+    h.down=h.down==='a'?'b':'a';
+    refs[i].ball.animate([{transform:'rotateX(0) scale(1)'},{transform:'rotateX(180deg) scale(1.1)'},{transform:'rotateX(360deg) scale(1)'}],{duration:380,easing:'ease-out'});
+    burst(.15,.25,3000);
+  }
+  else if(type==='pick'){
+    if(h.st==='empty') return;
+    if(h.st==='batter') return say('還是液體，夾不起來～先翻面');
+    if(plate.balls.length>=plateCap()) return say('盤子滿了！先上菜吧');
+    plate.balls.push({a:h.a,b:h.b,fill:h.fill.map(f=>f.id)}); clearHole(h); blip(880); renderPlate();
+  }
+  else if(type==='trash'){ if(h.st!=='empty'){clearHole(h);blip(220)} }
+  draw(i);
+}
+
+/* pointer: left/tap = pour/add/flip, right-click or double-tap = pick */
+let stroke=null, lastTap={i:-1,t:0,type:''};
+const holeAt=e=>{const el=document.elementFromPoint(e.clientX,e.clientY);return el&&el.closest?el.closest('.hole'):null};
+function startLeft(i){const t=leftType(holes[i]);stroke={type:t,seen:new Set([i])};doAct(t,i,true);return t}
+pan.addEventListener('contextmenu',e=>e.preventDefault());
+pan.addEventListener('dblclick',e=>e.preventDefault());
+pan.addEventListener('pointerdown',e=>{
+  initAudio(); const el=holeAt(e); if(!el) return; const i=+el.dataset.i;
+  try{pan.setPointerCapture(e.pointerId)}catch(_){}
+  if(e.button===2){stroke={type:'pick',seen:new Set([i])};doAct('pick',i,true);return}
+  if(e.button!==0) return;
+  const now=performance.now(), h=holes[i];
+  if(lastTap.i===i&&now-lastTap.t<350&&h.st==='ball'&&tool!=='trash'){
+    if(lastTap.type==='flip') h.down=h.down==='a'?'b':'a';
+    lastTap={i:-1,t:0,type:''};
+    stroke={type:'pick',seen:new Set([i])}; doAct('pick',i,true); return;
+  }
+  const t=startLeft(i); lastTap={i,t:now,type:t};
+});
+pan.addEventListener('pointermove',e=>{
+  const el=holeAt(e);
+  if(!stroke||!el) return; const i=+el.dataset.i; if(stroke.seen.has(i)) return; stroke.seen.add(i);
+  lastTap={i:-1,t:0,type:''};
+  const t=stroke.type==='pick'?'pick':leftType(holes[i]); if(t===stroke.type) doAct(t,i,false);
+});
+pan.addEventListener('pointerup',()=>{stroke=null});
+pan.addEventListener('pointercancel',()=>{stroke=null});
+
+/* ---------- tool grid ---------- */
+const grid=$('grid');
+function setTool(id){tool=(tool===id&&id!==null)?null:id;document.querySelectorAll('.tool[data-tool]').forEach(b=>b.classList.toggle('on',(b.dataset.tool||null)===(tool||'')||(tool===null&&b.dataset.tool==='')))}
+TOPS.forEach((t,n)=>{
+  const b=document.createElement('button');b.className='tool';b.dataset.tool=t.id;
+  b.innerHTML=`<kbd>${n+1}</kbd><span class="ic">${topHTML(t)}</span>${t.name}`;
+  b.onclick=()=>{initAudio();setTool(t.id)};grid.appendChild(b);
+});
+const quickBtns=[];
+[['','🥢','竹籤翻面'],['trash','🗑️','丟掉']].forEach(([id,ic,nm])=>{
+  const b=document.createElement('button');b.className='tool'+(id===''?' on':'');b.dataset.tool=id;quickBtns.push(b);
+  b.innerHTML=`${id===''?'<kbd>Z</kbd>':'<kbd>X</kbd>'}<span class="ic">${ic}</span>${nm}`;b.onclick=()=>setTool(id||null);grid.appendChild(b);
+});
+const pa=document.createElement('button');pa.className='tool act';pa.innerHTML='<kbd>C</kbd><span class="ic">🥣</span>全部倒滿';
+pa.onclick=()=>{initAudio();if(paused||game!=='play')return;let n=0;holes.forEach((h,i)=>{if(h.st==='empty'){pour(h);n++;draw(i)}});if(n)burst(.3,.9,1500);else toast('都倒滿了')};
+grid.appendChild(pa); quickBtns.push(pa);
+const mq=matchMedia('(max-width:640px)');
+function placeQuick(){const box=mq.matches?$('quick'):grid;quickBtns.forEach(b=>box.appendChild(b))}
+placeQuick(); mq.addEventListener?mq.addEventListener('change',placeQuick):mq.addListener(placeQuick);
+document.addEventListener('keydown',e=>{
+  const n='123456789'.indexOf(e.key);
+  if(e.repeat) return;
+  if(n>=0) setTool(TOPS[n].id);
+  const k=e.key.toLowerCase();
+  if(e.ctrlKey||e.metaKey||e.altKey) return;
+  else if(k==='z'||e.key==='Escape'){e.preventDefault();setTool(null)}
+  else if(k==='x'){e.preventDefault();if(tool!=='trash')setTool('trash')}
+  else if(k==='c'){e.preventDefault();pa.click()}
+});
+
+/* heat */
+document.querySelectorAll('[data-heat]').forEach(b=>b.onclick=()=>{
+  heat=+b.dataset.heat; document.querySelectorAll('[data-heat]').forEach(x=>x.classList.toggle('on',x===b)); renderFlames();
+});
+function renderFlames(){
+  const n=heat<1?3:heat>1?7:5, hgt=heat<1?10:heat>1?22:16;
+  $('flames').innerHTML=Array.from({length:n},()=>`<i style="height:${hgt*rand(.7,1)}px"></i>`).join('');
+  pan.style.setProperty('--glow',heat<1?.15:heat>1?.55:.3);
+}
+renderFlames();
+
+/* ---------- plate ---------- */
+function rng(s){return()=>{s|=0;s=s+0x6D2B79F5|0;let t=Math.imul(s^s>>>15,1|s);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function plateCap(){return (mode==='order'&&queue[0]&&queue[0].super)?12:MAXP}
+let PCOLS=4, PSC=1;
+const STACK=[{x:120,y:114},{x:280,y:114},{x:200,y:112},{x:200,y:90}];
+const pos=k=>k<8?{x:80+(k%4)*80,y:k<4?84:148}:STACK[k-8];
+const wrap=(p,inner)=>PSC===1?inner:`<g transform="translate(${p.x} ${p.y}) scale(${PSC}) translate(${-p.x} ${-p.y})">${inner}</g>`;
+function renderPlate(){
+  const B=plate.balls, S=plate.sauce;
+  let s=`<defs><filter id="sh"><feDropShadow dx="0" dy="3" stdDeviation="2" flood-opacity=".35"/></filter>`;
+  B.forEach((b,k)=>{s+=`<radialGradient id="g${k}" cx=".36" cy=".3" r=".75"><stop offset="0" stop-color="${col(b.a,45)}"/><stop offset=".45" stop-color="${col(b.a)}"/><stop offset="1" stop-color="${col(b.b)}"/></radialGradient>`});
+  s+=`</defs>
+  <path d="M18 58 Q18 36 44 34 L356 34 Q382 36 382 58 L370 176 Q366 198 342 198 L58 198 Q34 198 30 176 Z" fill="#e9d3a6" stroke="#b48d58" stroke-width="3"/>
+  <path d="M34 62 Q34 48 52 47 L348 47 Q366 48 366 62 L356 172 Q353 186 336 186 L64 186 Q47 186 44 172 Z" fill="#f6e7c6"/>`;
+  if(!B.length) s+=`<text x="200" y="108" text-anchor="middle" font-size="24" font-weight="700" fill="#b48d58" font-family="Zen Maru Gothic"><tspan x="200">右鍵或點兩下</tspan><tspan x="200" dy="34">把烤好的章魚燒夾來這裡</tspan></text>`;
+  B.forEach((b,k)=>{const p=pos(k);s+=`<circle cx="${p.x}" cy="${p.y}" r="${34*PSC}" fill="url(#g${k})" filter="url(#sh)"/>`});
+  const auto=mode!=='free';
+  if(auto&&S.sauce) B.forEach((b,k)=>{const p=pos(k),R=rng(k*31+7);
+    s+=wrap(p,`<path d="M${p.x-27} ${p.y-6} Q${p.x-24} ${p.y-30} ${p.x} ${p.y-31} Q${p.x+26} ${p.y-30} ${p.x+28} ${p.y-4} Q${p.x+22} ${p.y+8+R()*6} ${p.x+8} ${p.y+2} Q${p.x} ${p.y+12} ${p.x-10} ${p.y+3} Q${p.x-22} ${p.y+10} ${p.x-27} ${p.y-6}Z" fill="#5a2a12" opacity=".92"/>
+    <ellipse cx="${p.x-9}" cy="${p.y-17}" rx="8" ry="4" fill="#fff" opacity=".25" transform="rotate(-20 ${p.x-9} ${p.y-17})"/>`)});
+  if(auto&&S.mayo&&B.length){[0,1,2].forEach(row=>{const ks=B.map((_,k)=>k).filter(k=>(k<4?0:k<8?1:2)===row);if(!ks.length)return;
+    const y=pos(ks[0]).y-8, x0=pos(ks[0]).x-30, x1=pos(ks[ks.length-1]).x+30; let pts=[],up=true;
+    for(let x=x0;x<=x1;x+=11*PSC){pts.push(`${x},${y+(up?-12:12)*PSC}`);up=!up}
+    s+=`<polyline points="${pts.join(' ')}" fill="none" stroke="#e5d9b6" stroke-width="5" stroke-linejoin="round" stroke-linecap="round" transform="translate(0 1.5)"/>
+       <polyline points="${pts.join(' ')}" fill="none" stroke="#fffdf0" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>`})}
+  if(auto&&S.nori) B.forEach((b,k)=>{const p=pos(k),R=rng(k*53+3);let t='';for(let j=0;j<18;j++){const a=R()*6.28,d=R()*26;t+=`<circle cx="${p.x+Math.cos(a)*d}" cy="${p.y-6+Math.sin(a)*d*.8}" r="${1+R()*1.1}" fill="${R()<.5?'#2f6b2a':'#4f8f3a'}"/>`}s+=wrap(p,t)});
+  if(auto&&S.bonito) B.forEach((b,k)=>{const p=pos(k),R=rng(k*97+11);let t='';for(let j=0;j<5;j++){const x=p.x-20+R()*40,y=p.y-24+R()*22,w=7+R()*7,hh=9+R()*7;
+    t+=`<path class="flake" style="animation-delay:-${(R()*1.1).toFixed(2)}s;animation-duration:${(0.8+R()*0.7).toFixed(2)}s" d="M${x} ${y+hh} Q${x-w*.3} ${y+hh*.4} ${x+w*.1} ${y} L${x+w} ${y+hh*.2} Q${x+w*.7} ${y+hh*.7} ${x+w*.8} ${y+hh} Z" fill="${R()<.5?'#f3c2a8':'#dc9c7e'}" opacity=".95"/>`}s+=wrap(p,t)});
+  if(!auto) s+=drawStrokes();
+  $('plate').innerHTML=s;
+}
+const sb=$('sauces');
+SAUCES.forEach(x=>{const b=document.createElement('button');b.className='sbtn';b.innerHTML=`<span class="sw" style="background:${x.sw}"></span><span class="sn">${x.name}</span>`;b.title=x.name;
+  b.onclick=()=>{initAudio();
+    if(mode==='free'){freeBrush=freeBrush===x.id?null:x.id;sb.querySelectorAll('.sbtn').forEach(q=>q.classList.toggle('on',q===b&&!!freeBrush));blip(freeBrush?660:330);
+      if(freeBrush)toast('在盤子上拖曳畫'+x.name+'！');return}
+    if(!plate.balls.length)return toast('盤子上還沒有章魚燒');plate.sauce[x.id]=!plate.sauce[x.id];b.classList.toggle('on',!!plate.sauce[x.id]);blip(plate.sauce[x.id]?660:330);renderPlate()};
+  sb.appendChild(b)});
+function resetPlate(){plate={balls:[],sauce:{},strokes:[]};if(mode!=='free'){freeBrush=null;sb.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('on'))}renderPlate()}
+/* ---- free mode: draw sauces by hand ---- */
+let freeBrush=null, drawing=null;
+function drawStrokes(){
+  let t='';
+  (plate.strokes||[]).forEach((st,si)=>{
+    const P=st.pts; if(!P.length) return; const pts=P.map(q=>q.join(',')).join(' ');
+    if(st.t==='sauce') t+=`<polyline points="${pts}" fill="none" stroke="#5a2a12" stroke-width="10" stroke-linecap="round" stroke-linejoin="round" opacity=".93"/><polyline points="${pts}" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" opacity=".18" transform="translate(-2 -2)"/>`;
+    else if(st.t==='mayo') t+=`<polyline points="${pts}" fill="none" stroke="#e5d9b6" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" transform="translate(0 1.5)"/><polyline points="${pts}" fill="none" stroke="#fffdf0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>`;
+    else if(st.t==='nori'){const R=rng(si*131+7);P.forEach(([x,y])=>{for(let j=0;j<3;j++)t+=`<circle cx="${x+(R()-.5)*14}" cy="${y+(R()-.5)*14}" r="${1+R()*1.1}" fill="${R()<.5?'#2f6b2a':'#4f8f3a'}"/>`})}
+    else if(st.t==='bonito'){const R=rng(si*97+3);P.forEach(([x,y],i)=>{if(i%3)return;const w=7+R()*7,hh=9+R()*7;
+      t+=`<path class="flake" style="animation-delay:-${(R()*1.1).toFixed(2)}s" d="M${x} ${y+hh} Q${x-w*.3} ${y+hh*.4} ${x+w*.1} ${y} L${x+w} ${y+hh*.2} Q${x+w*.7} ${y+hh*.7} ${x+w*.8} ${y+hh} Z" fill="${R()<.5?'#f3c2a8':'#dc9c7e'}"/>`})}
+  });
+  return t;
+}
+(()=>{const svg=$('plate');
+  const at=e=>{const r=svg.getBoundingClientRect();return [Math.round((e.clientX-r.left)/r.width*400),Math.round((e.clientY-r.top)/r.height*210)]};
+  svg.addEventListener('pointerdown',e=>{
+    if(mode!=='free'||!freeBrush) return;
+    if(!plate.balls.length){toast('先夾章魚燒到盤子上');return}
+    e.preventDefault(); try{svg.setPointerCapture(e.pointerId)}catch(_){}
+    drawing={t:freeBrush,pts:[at(e)]}; (plate.strokes=plate.strokes||[]).push(drawing); plate.sauce[freeBrush]=true; renderPlate();
+  });
+  svg.addEventListener('pointermove',e=>{
+    if(!drawing) return; const q=at(e), l=drawing.pts[drawing.pts.length-1];
+    if(Math.hypot(q[0]-l[0],q[1]-l[1])>=4){drawing.pts.push(q);renderPlate()}
+  });
+  const end=()=>{if(drawing){drawing=null;blip(520)}};
+  svg.addEventListener('pointerup',end); svg.addEventListener('pointercancel',end);
+})();
+$('clearPlate').onclick=()=>resetPlate();
+$('undoDraw').onclick=()=>{if(plate.strokes&&plate.strokes.length){const st=plate.strokes.pop();if(!plate.strokes.some(x=>x.t===st.t))plate.sauce[st.t]=false;renderPlate();blip(330)}};
+
+/* ---------- customers ---------- */
+let uid=0;
+function makeCustomer(){
+  spawnCount++;
+  const L=cfg, endless=levelKey==='endless', sup=(endless&&served>=6&&Math.random()<.04)||(!!L.superChance&&spawnCount>1&&Math.random()<L.superChance), boss=sup||L.boss(spawnCount);
+  const [ic,name]=sup?pick(SUPER):boss?pick(BOSS):pick(CUST);
+  const nMax=endless?Math.min(8,L.n[1]+Math.floor(served/5)):L.n[1], kMax=endless?Math.min(4,L.k[1]+Math.floor(served/8)):L.k[1];
+  const n=sup?12:boss?8:L.n[0]+ri(nMax-L.n[0]+1);
+  const kinds=sup?4+ri(2):boss?3+ri(2):L.k[0]+ri(kMax-L.k[0]+1);
+  const pool=TOPS.map(t=>t.id).sort(()=>Math.random()-.5).slice(0,kinds);
+  if(!boss&&Math.random()<.5&&!pool.includes('tako')) pool[0]='tako';
+  const wants=pool.map(id=>({id,c:boss?2+ri(n-1):(Math.random()<.4?n:1+ri(n))}));
+  const rules={};
+  SAUCES.forEach(s=>{const r=Math.random();
+    if(boss) rules[s.id]=r<(s.id==='sauce'?.8:.5)?'must':'no';
+    else rules[s.id]=r<(s.id==='sauce'?.75:.42)?'must':r<(s.id==='sauce'?.85:.62)?'no':null});
+  const nRules=Object.values(rules).filter(Boolean).length;
+  const diff=endless?Math.max(.55,1-served*.025):1-(spawnCount-1)*.015;
+  const max=(40+n*6.5+kinds*5.5+nRules*2.5)*L.pat*diff*(boss?.88:1);
+  return {id:++uid,ic,name,boss,super:sup,n,wants,rules,max,patience:max,isNew:true};
+}
+function bubbleHTML(c){
+  const sauces=SAUCES.filter(s=>c.rules[s.id]).map(s=>`<span class="sc ${c.rules[s.id]==='no'?'no':''}" style="background:${s.sw}" title="${c.rules[s.id]==='no'?'不要':'要'}${s.name}"></span>`).join('');
+  return `<div class="bubble">${c.super?'<div class="btitle">💀 超級魔王點單</div>':c.boss?'<div class="btitle">👑 魔王點單</div>':''}
+    <div class="brow"><span class="chip"><span class="tk"></span>×${c.n}</span></div>
+    <div class="brow">${c.wants.map(w=>`<span class="chip" title="${TOP[w.id].name}">${topHTML(TOP[w.id])}×${w.c}</span>`).join('')}</div>
+    ${sauces?`<div class="brow">${sauces}</div>`:''}</div>`;
+}
+const qEl=$('queue'), cEls=new Map();
+function renderQueue(){
+  queue.forEach((c,idx)=>{
+    let el=cEls.get(c.id);
+    if(!el){
+      el=document.createElement('div');
+      el.innerHTML=`${bubbleHTML(c)}<div class="face">${c.ic}${c.boss?'<span class="crown">👑</span>':''}<span class="mood">😊</span></div>
+        <div class="pbar"><i></i></div><div class="nm">${c.name}</div>`;
+      el.classList.add('cus','enter'); if(c.boss) el.classList.add('boss'); if(c.super) el.classList.add('super');
+      cEls.set(c.id,el); c.bar=el.querySelector('.pbar i'); c.moodEl=el.querySelector('.mood');
+      setTimeout(()=>el.classList.remove('enter'),650);
+    }
+    el.classList.toggle('front',idx===0);
+    qEl.appendChild(el);
+  });
+  $('qEmpty').style.display=queue.length?'none':'flex';
+}
+function removeCustomer(c,how){
+  queue=queue.filter(x=>x!==c); const el=cEls.get(c.id); cEls.delete(c.id);
+  if(el){el.classList.remove('front');el.classList.add(how);setTimeout(()=>el.remove(),700)}
+  setTimeout(renderQueue,how==='angry'?250:0);
+  if(!queue.length) nextSpawn=Math.min(nextSpawn,2);
+}
+function updateCustomers(dt){
+  if(mode!=='order') return;
+  nextSpawn-=dt;
+  if(nextSpawn<=0&&queue.length<QMAX&&spawnCount<cfg.total){
+    queue.push(makeCustomer());renderQueue();renderProg();
+    const f=levelKey==='endless'?Math.max(.6,1-served*.02):1;
+    nextSpawn=rand(cfg.spawn[0],cfg.spawn[1])*f;
+  }
+  if(spawnCount>=cfg.total&&!queue.length){endGame();return}
+  queue.slice().forEach((c,idx)=>{
+    c.patience-=dt*(idx===0?1:.25)*(EV?.4:1);
+    const p=Math.max(0,c.patience/c.max);
+    c.bar.style.width=p*100+'%'; c.bar.style.background=p>.6?'#7ee07e':p>.3?'#ffcf4a':'#ff5a4a';
+    const m=p>.6?'😊':p>.3?'😐':'😠'; if(c.moodEl.textContent!==m) c.moodEl.textContent=m;
+    c.moodEl.classList.toggle('mad',p<.2);
+    if(c.patience<=0){
+      leftN++;$('left').textContent=leftN;
+      const loss=Math.max(Math.floor(coins*cfg.angry),cfg.minA); coins-=loss; saveCoins();
+      toast(`${c.name} 等太久氣走了… 💰-${loss}${cfg.hearts?' 💔':''}`,4000,true); blip(180); removeCustomer(c,'angry');
+      if(cfg.hearts) hearts--;
+      if(coins<0||(cfg.hearts&&hearts<=0)){renderProg();endGame();return}
+      renderProg();
+    }
+  });
+}
+
+/* ---------- serve & score ---------- */
+function q(d){ if(d<30)return 0; if(d<60)return(d-30)/30*.8; if(d<=110)return 1; if(d<=125)return 1-(d-110)/15*.6; return Math.max(0,.4-(d-125)/30*.4)}
+function saveCoins(){$('coins').textContent=coins}
+$('serve').onclick=()=>{
+  initAudio(); if(paused||game!=='play') return;
+  const B=plate.balls; if(!B.length) return toast('盤子是空的喔');
+  const c=mode==='order'?queue[0]:null;
+  if(mode==='order'&&!c) return toast('現在沒有客人在等');
+  const raw=B.filter(b=>Math.min(b.a,b.b)<55).length, burnt=B.filter(b=>Math.max(b.a,b.b)>115).length;
+  const doneAvg=B.reduce((s,b)=>s+Math.min(q(b.a),q(b.b)),0)/B.length;
+  const burntPen=B.reduce((s,b)=>{const m=Math.max(b.a,b.b);return s+(m>145?14:m>115?9:0)},0);
+  const rawPen=B.reduce((s,b)=>{const m=Math.min(b.a,b.b);return s+(m<30?14:m<55?9:0)},0);
+  const cnt={}; B.forEach(b=>b.fill.forEach(f=>cnt[f]=(cnt[f]||0)+1));
+  const sum='這盤有：'+(Object.keys(cnt).length?Object.entries(cnt).map(([k,v])=>`${TOP[k].name}×${v}`).join('、'):'（原味）')+
+    (SAUCES.some(s=>plate.sauce[s.id])?'<br>淋上：'+SAUCES.filter(s=>plate.sauce[s.id]).map(s=>s.name).join('、'):'');
+  let score, issues=[], who, name, earn, bonusTxt='';
+  if(raw) issues.push(`有 ${raw} 顆裡面還生生的…`);
+  if(burnt) issues.push(`有 ${burnt} 顆焦掉了，苦苦的`);
+  if(c){
+    who=c.ic; name=c.name;
+    const m=B.length, cs=m===c.n?1:m<c.n?Math.max(0,1-(c.n-m)/c.n):Math.max(.6,1-.1*(m-c.n));
+    let fs=0; c.wants.forEach(w=>{const got=cnt[w.id]||0; fs+=Math.max(0,1-Math.abs(got-w.c)/w.c);
+      if(got!==w.c) issues.push(`${TOP[w.id].name}要 ${w.c} 顆，你放了 ${got} 顆`)});
+    fs/=c.wants.length;
+    const rl=SAUCES.filter(s=>c.rules[s.id]); let sOk=0;
+    rl.forEach(s=>{const on=!!plate.sauce[s.id];
+      if(c.rules[s.id]==='must'){if(on)sOk++;else issues.push(`我的${s.name}呢？`)}
+      else {if(!on)sOk++;else issues.push(`不是說不要${s.name}嗎！`)}});
+    if(m<c.n) issues.unshift(`說好 ${c.n} 顆，怎麼只有 ${m} 顆？`);
+    const extraIds=new Set(); let wrongBalls=0;
+    B.forEach(b=>{const ex=b.fill.filter(f=>!c.wants.some(w=>w.id===f));if(ex.length){wrongBalls++;ex.forEach(f=>extraIds.add(f))}});
+    if(wrongBalls) issues.push(`我沒點${[...extraIds].map(f=>TOP[f].name).join('、')}！`);
+    var wrongPen=wrongBalls*4;
+    score=Math.round(20*cs+35*doneAvg+30*fs+15*(rl.length?sOk/rl.length:1))-wrongPen;
+    if(m>c.n&&!issues.length) issues.push(`多送了 ${m-c.n} 顆？老闆人真好！`);
+  }else{
+    who='🧑‍🍳'; name='試吃時間';
+    score=Math.round(70*doneAvg+Math.min(Object.keys(cnt).length,4)*5+(SAUCES.filter(s=>plate.sauce[s.id]).length>=2?10:0));
+  }
+  const pp=c?Math.max(0,c.patience/c.max):1, waitPen=pp<.6?Math.round((.6-pp)/.6*30):0;
+  if(waitPen>=10) issues.push(pick(['等好久喔…肚子都餓扁了','下次可以快一點嗎？','終於來了…']));
+  score=Math.max(0,Math.min(100,score-burntPen-rawPen-waitPen));
+  const stars=score>=90?3:score>=70?2:score>=45?1:0;
+  const good=pick(['外酥內軟，完美！','好燙好燙…但是好好吃！','這就是夜市的味道～','我還要再來一盤！']);
+  let say=issues.length?(stars>=2?good.replace(/！$/,'，')+'不過'+issues[0]:issues.slice(0,2).join('<br>')):good;
+  let earnHTML;
+  if(c){
+    if(stars===0){
+      const loss=Math.max(Math.floor(coins*cfg.wrong),cfg.minW); coins-=loss; earn=0;
+      earnHTML=`💰 -${loss}<br><small style="font-size:12px;color:#9a6a3a">做錯了，扣 ${Math.round(cfg.wrong*100)}%（最少 ${cfg.minW}）${cfg.hearts?'・💔 失去一顆愛心':''}${coins<0?'・💸 錢變負的了！':''}</small>`;
+      if(cfg.hearts) hearts--;
+    }else{
+      const tip=Math.round(c.patience/c.max*10);
+      earn=(Math.round(score/5)+(stars===3?10:0)+tip)*(c.super?3:c.boss?2:1); coins+=earn; happy.push(c.ic);
+      earnHTML=`💰 +${earn}<br><small style="font-size:12px;color:#9a6a3a">${tip?`含等候小費 ${tip}`:''}${c.super?' 超級魔王三倍！':c.boss?' 魔王加倍！':''}</small>`;
+    }
+    if(c.super&&stars===3) say='……十二顆，全部完美。吾，承認汝為章魚燒之神！<br>'+say;
+    else if(c.boss&&stars===3) say='唔…本王認可你的手藝！<br>'+say;
+    if(c.boss&&stars===0) say='這種東西也敢端給本王！？<br>'+say;
+    served++; $('served').textContent=served;
+  }else{earn=Math.round(score/10);coins+=earn;earnHTML=`💰 +${earn}`}
+  saveCoins(); renderProg();
+  const over=!!c&&(coins<0||(cfg.hearts&&hearts<=0));
+  showModal(`<div class="who">${who}</div><b>${name}</b>
+    <div class="stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div><div class="score">${score} 分${burntPen?`<br><span style="color:#c8382c">🔥 焦掉 ${burnt} 顆：-${burntPen} 分</span>`:''}${rawPen?`<br><span style="color:#3a6bd8">💧 沒熟 ${raw} 顆：-${rawPen} 分</span>`:''}${typeof wrongPen!=='undefined'&&wrongPen?`<br><span style="color:#8a3fd0">🙅 加錯料 ${wrongPen/4} 顆：-${wrongPen} 分</span>`:''}${waitPen?`<br><span style="color:#b8860b">⏳ 讓客人等太久：-${waitPen} 分</span>`:''}</div>
+    <div class="say">${say}</div><div class="sum">${sum}</div><div class="earn">${earnHTML}</div>
+    <button class="big serve" id="next" style="width:100%">${over?'看結果…':c?'下一位！':'再烤一盤'}</button>`);
+  chime(stars);
+  if(c) removeCustomer(c,'bye');
+  $('next').onclick=()=>{hideModal();resetPlate();if(over)endGame()};
+};
+
+
+/* ---------- random side tasks ---------- */
+let EV=null, evNext=40;
+function evCfg(){
+  const e=cfg&&cfg.ev; if(!e) return null;
+  if(levelKey!=='endless') return e;
+  const k=Math.floor(served/6);
+  return {gap:e.gap.map(g=>g*Math.max(.55,1-served*.02)),mash:e.mash+k,spots:e.spots+Math.min(3,k),cat:Math.max(2.2,e.cat-k*.3),t:Math.max(4,e.t-k*.3)};
+}
+function evReset(){clearEv();const e=evCfg();evNext=e?rand(e.gap[0],e.gap[1]):1e9}
+function clearEv(){EV=null;document.querySelectorAll('.evx').forEach(x=>x.remove())}
+function evEl(cls,html){const d=document.createElement('div');d.className='evx '+cls;d.innerHTML=html;document.body.appendChild(d);return d}
+function startEvent(){
+  const e=evCfg(); if(!e) return;
+  const kinds=['troll','grease']; if(plate.balls.length) kinds.push('cat');
+  const k=pick(kinds);
+  if(k==='troll'){
+    const r=document.querySelector('.queueWrap').getBoundingClientRect();
+    EV={k,t:e.t,max:e.t,need:e.mash,n:0};
+    const el=evEl('evtroll',`<div class="evface">😡🍺</div><div class="evtxt">鬧事的醉漢！連點趕走他 <b>0/${e.mash}</b></div><div class="evbar"><i></i></div>`);
+    const pr=pan.getBoundingClientRect(); el.style.left=(pr.left+pr.width/2)+'px'; el.style.top=(pr.top+pr.height/2)+'px';
+    el.onpointerdown=ev=>{ev.preventDefault();ev.stopPropagation();if(!EV)return;EV.n++;blip(300+EV.n*40);el.classList.remove('hit');void el.offsetWidth;el.classList.add('hit');
+      el.querySelector('b').textContent=`${EV.n}/${EV.need}`;if(EV.n>=EV.need)evWin('醉漢被趕走了！👋')};
+    EV.el=el; toast('😡 有人在鬧事！快連點趕走他',2200,true);
+  }else if(k==='grease'){
+    const r=pan.getBoundingClientRect(); EV={k,t:e.t+1,max:e.t+1,need:e.spots,n:0,els:[]};
+    const banner=evEl('evbanner',`🟤 檯面油膩！把油漬點掉 <b>0/${e.spots}</b><div class="evbar"><i></i></div>`);
+    banner.style.left=(r.left+r.width/2)+'px'; banner.style.top=Math.max(4,r.top-(innerWidth<=640?34:38))+'px'; EV.el=banner;
+    for(let i=0;i<e.spots;i++){const sp=evEl('evspot','🟤');sp.style.left=(r.left+20+Math.random()*(r.width-40))+'px';sp.style.top=(r.top+40+Math.random()*(r.height-60))+'px';
+      sp.onpointerdown=ev=>{ev.preventDefault();ev.stopPropagation();if(!EV)return;sp.remove();EV.n++;blip(700);banner.querySelector('b').textContent=`${EV.n}/${EV.need}`;if(EV.n>=EV.need)evWin('檯面亮晶晶！✨')};EV.els.push(sp)}
+    toast('🟤 檯面油膩了！快擦乾淨',2000,true);
+  }else{
+    const r=document.getElementById('plate').getBoundingClientRect(); EV={k,t:e.cat,max:e.cat,need:1,n:0};
+    const el=evEl('evcat','🐈'); el.style.left=(r.left-10)+'px'; el.style.top=(r.top+r.height/2)+'px';
+    el.style.transition=`left ${e.cat}s linear`; requestAnimationFrame(()=>requestAnimationFrame(()=>{el.style.left=(r.left+r.width*.55)+'px'}));
+    el.onpointerdown=ev=>{ev.preventDefault();ev.stopPropagation();if(!EV)return;evWin('貓被嚇跑了！🐾')};
+    EV.el=el; toast('🐈 有貓要偷吃章魚燒！快點牠',2000,true);
+  }
+}
+function evWin(msg){toast(msg);blip(660);blip(880,.08);evReset()}
+function evFail(){
+  const k=EV.k;
+  if(k==='troll'){queue.forEach(c=>c.patience=Math.max(1,c.patience-c.max*.15));toast('醉漢大鬧一場，排隊的客人都不耐煩了…',3000,true)}
+  else if(k==='grease'){const loss=Math.max(3,Math.floor(coins*.05));coins-=loss;saveCoins();toast(`油膩的檯面被客訴了 💰-${loss}`,3000,true);if(coins<0&&game==='play'){evReset();endGame();return}}
+  else{if(plate.balls.length){plate.balls.pop();renderPlate()}toast('貓叼走了一顆章魚燒！🐈💨',3000,true)}
+  blip(160); evReset();
+}
+function evUpdate(dt){
+  if(mode!=='order'||game!=='play'||!evCfg()) {if(EV)clearEv();return}
+  if(EV){EV.t-=dt;const b=EV.el&&EV.el.querySelector('.evbar i');if(b)b.style.width=Math.max(0,EV.t/EV.max*100)+'%';if(EV.t<=0)evFail();return}
+  evNext-=dt; if(evNext<=0&&queue.length) startEvent();
+}
+
+/* ---------- game flow ---------- */
+function showModal(html){$('res').innerHTML=html;$('modal').classList.add('show');modalOpen=true}
+function hideModal(){$('modal').classList.remove('show');modalOpen=false;if(inMenu){inMenu=false;releasePause('menu')}}
+function renderProg(){
+  const p=$('prog');
+  if(game==='menu'||!cfg){p.style.display='none';return} p.style.display='';
+  if(levelKey==='free') p.textContent='🧑‍🍳 自由烤';
+  else if(levelKey==='endless') p.textContent='♾️ '+'❤️'.repeat(Math.max(0,hearts))+'🤍'.repeat(Math.max(0,3-hearts));
+  else p.textContent=`${cfg.icon}${innerWidth<=640?'':' '+cfg.label}　👥 ${Math.min(served+leftN,cfg.total)}/${cfg.total}　🎯 💰${cfg.target}`;
+}
+function resetRun(){
+  clearEv();
+  holes.forEach((h,i)=>{clearHole(h);draw(i)}); resetPlate();
+  cEls.forEach(el=>el.remove()); cEls.clear(); queue=[]; renderQueue();
+  holds.clear();
+  coins=0; served=0; leftN=0; happy=[]; spawnCount=0; nextSpawn=1.5; paused=false; $('pause').innerHTML=ICO.pause;
+  saveCoins(); $('served').textContent=0; $('left').textContent=0;
+}
+function start(key){
+  levelKey=key; cfg=LEVELS[key]; resetRun();
+  mode=key==='free'?'free':'order'; document.body.classList.toggle('free',mode==='free');
+  freeBrush=null; sb.querySelectorAll('.sbtn').forEach(b=>b.classList.remove('on')); renderPlate();
+  hearts=cfg.hearts||0; game='play'; hideModal(); renderProg(); initAudio(); bgmResume(); syncPauseIcon(); evReset();
+}
+function bestText(k){
+  const b=best[k]; if(b==null) return '';
+  return k==='endless'?`最佳：${b.served} 位`:`最佳：💰${b}`;
+}
+function showMenu(){
+  inMenu=true; holdPause('menu');
+  const L=k=>`<button class="lv" data-k="${k}"><span class="li">${LEVELS[k].icon}</span><span><b>${LEVELS[k].label}</b><small>${LEVELS[k].desc}</small></span><span class="best">${bestText(k)}</span></button>`;
+  showModal(`<h1>🐙 章魚燒屋</h1><div class="sub">選一個營業模式開店吧！<br>氣走客人或做錯會扣錢，錢變負的就破產結束！</div>
+    ${['easy','normal','hard','hell','endless','free'].map(L).join('')}
+    ${game==='play'?'<button class="big ghost2" id="resumeG" style="width:100%;margin-top:12px">↩ 回到目前的遊戲</button>':''}`);
+  $('res').querySelectorAll('.lv').forEach(b=>b.onclick=()=>start(b.dataset.k));
+  if($('resumeG')) $('resumeG').onclick=hideModal;
+}
+function endGame(){
+  clearEv();
+  if(game!=='play') return;
+  game='end'; queue.slice().forEach(c=>removeCustomer(c,'bye'));
+  let html, party=false;
+  if(coins<0){
+    html=`<div class="who">💸</div><h1>破產了！</h1><div class="sub">${cfg.icon} ${cfg.label}・錢錢變成負的，只好收攤…</div>
+      <div class="say">剩下 💰${coins}</div>
+      <div class="sum">😋 服務 ${served} 位　😤 氣走 ${leftN} 位</div>`;
+  }else if(levelKey==='endless'){
+    const rec=!best.endless||served>best.endless.served; if(rec){best.endless={served,coins};party=served>0}
+    html=`<div class="who">💔</div><h1>打烊了！</h1><div class="sub">愛心用完了</div>
+      <div class="say">撐了 <b>${served}</b> 位客人<br>賺到 💰${coins}${rec?'<br>🏆 新紀錄！':''}</div>
+      <div class="sum">😋 服務 ${served} 位　😤 氣走 ${leftN} 位</div>`;
+  }else{
+    const pass=coins>=cfg.target, st=coins>=cfg.target*1.6?3:coins>=cfg.target*1.3?2:pass?1:0;
+    const rec=pass&&(best[levelKey]==null||coins>best[levelKey]); if(rec) best[levelKey]=coins;
+    party=pass;
+    const pool=[...new Set(happy.length?happy:['🐻','🐱','🐰'])].sort(()=>Math.random()-.5);
+    const faces=pool.slice(0,5);
+    html=(pass?`<div class="cheer"><span class="popper l">🎉</span>${faces.map((f,i)=>`<span class="fan" style="animation-delay:${i*.12}s">${f}</span>`).join('')}<span class="popper r">🎉</span></div><div class="hooray">萬歲～！好好吃！🙌</div>`:'')+
+      `<div class="who">${pass?'🏮':'😢'}</div><h1>${pass?'過關！':'沒有達標…'}</h1><div class="sub">${cfg.icon} ${cfg.label}・營業結束</div>
+      <div class="stars">${'★'.repeat(st)}${'☆'.repeat(3-st)}</div>
+      <div class="say">賺到 💰${coins} ／ 目標 💰${cfg.target}${rec?'<br>🏆 新紀錄！':''}</div>
+      <div class="sum">😋 服務 ${served} 位　😤 氣走 ${leftN} 位</div>`;
+  }
+  try{localStorage.setItem('tako_best',JSON.stringify(best))}catch(e){}
+  showModal(html+`<div class="row2"><button class="big serve" id="again">🔁 重新遊玩</button><button class="big ghost2" id="toMenu">📋 選擇關卡</button></div>`);
+  renderProg();
+  if(party){confetti();fanfare()} else blip(200);
+  $('again').onclick=()=>start(levelKey); $('toMenu').onclick=()=>{game='menu';showMenu();renderProg()};
+}
+let rsT=0; const RS=ICO.restart+'<span class="lbl"> 重來</span>';
+$('restart').onclick=()=>{
+  const b=$('restart');
+  if(game!=='play'){start(levelKey);return}
+  if(!b.dataset.c){b.dataset.c=1;b.textContent='確定？';b.classList.add('on');clearTimeout(rsT);
+    rsT=setTimeout(()=>{delete b.dataset.c;b.innerHTML=RS;b.classList.remove('on')},2500);return}
+  clearTimeout(rsT);delete b.dataset.c;b.innerHTML=RS;b.classList.remove('on');start(levelKey);toast('重新開店！');
+};
+
+/* ---------- soft pause (menus / popovers) ---------- */
+const holds=new Set();
+function holdPause(r){
+  if(game!=='play') return;
+  holds.add(r);
+  if(!paused){paused=true;bgmPause()}
+  syncPauseIcon();
+}
+function releasePause(r){
+  if(!holds.delete(r)) return;
+  if(!holds.size&&paused&&game==='play'&&!$('modal').classList.contains('show')){paused=false;bgmResume()}
+  syncPauseIcon();
+}
+function syncPauseIcon(){$('pause').innerHTML=paused?ICO.play:ICO.pause}
+/* ---------- mobile drawer ---------- */
+const drawer=$('drawer');
+function openDrawer(){
+  const ri=drawer.querySelector('[data-act="restart"]'); ri.classList.remove('warn'); ri.innerHTML='<span><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 2.6-5.9"/><path d="M4 4v4.5h4.5"/></svg></span><b>重來</b>'; delete ri.dataset.c;
+  drawer.classList.add('open'); holdPause('drawer');
+}
+function closeDrawer(){drawer.classList.remove('open');releasePause('drawer')}
+$('burger').onclick=e=>{e.stopPropagation();closeVol();drawer.classList.contains('open')?closeDrawer():openDrawer()};
+drawer.querySelector('.dback').onclick=closeDrawer;
+drawer.querySelectorAll('.ditem').forEach(b=>b.onclick=e=>{
+  e.stopPropagation(); const act=b.dataset.act;
+  if(act==='resume'){closeDrawer();return}
+  if(act==='restart'){
+    if(game==='play'&&!b.dataset.c){b.dataset.c=1;b.classList.add('warn');b.innerHTML='<span><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3.5 2.5 20h19z"/><path d="M12 10v4.5"/><circle cx="12" cy="17.3" r=".6" fill="currentColor"/></svg></span><b>再按一次確定重來</b>';return}
+    holds.clear(); drawer.classList.remove('open'); start(levelKey); toast('重新開店！'); return;
+  }
+  // keep the game held while the next panel opens, then hand over
+  $(act).click(); closeDrawer();
+});
+$('infoBtn').onclick=e=>{
+  if(e&&e.stopPropagation)e.stopPropagation();
+  if(modalOpen&&!$('res').querySelector('.infobox')) return;
+  closeVol(); holdPause('info');
+  showModal(`<div class="infobox" style="text-align:left">
+    <h1 style="text-align:center">🐙 關於章魚燒屋</h1>
+    <div class="say" style="text-align:left;font-size:14px;font-weight:500;line-height:1.8">
+      <b>・完全免費</b>：這是一款免費的小遊戲，沒有任何付費、儲值或廣告，也不會要你花真的錢。<br>
+      <b>・虛擬金幣</b>：遊戲裡的 💰 只是分數，沒有實際價值，不能兌換任何東西。<br>
+      <b>・不收集資料</b>：遊戲不需要註冊，也不會上傳你的任何資料。最佳紀錄和音量設定只存在你自己的瀏覽器裡。<br>
+      <b>・背景音樂</b>：店內音樂來自 OpenTracks（舊 DOVA-SYNDROME）的免費素材，版權屬於原作者。<br>
+      <b>・純屬娛樂</b>：遊戲內容與角色皆為虛構，請開心玩就好；在不同裝置或瀏覽器上的表現可能略有差異。
+    </div>
+    <button class="big serve" id="infoClose" style="width:100%">知道了</button></div>`);
+  $('infoClose').onclick=()=>{hideModal();releasePause('info')};
+};
+$('menuBtn').onclick=e=>{if(e)e.stopPropagation();closeVol();showMenu()};
+function setHelp(on){document.body.classList.toggle('showHelp',on);on?holdPause('help'):releasePause('help')}
+$('help').onclick=e=>{if(e)e.stopPropagation();setHelp(!document.body.classList.contains('showHelp'))};
+document.querySelector('.steps').onclick=e=>{e.stopPropagation();setHelp(false)};
+function closeVol(){$('volPop').classList.remove('show');releasePause('vol')}
+document.addEventListener('click',()=>{closeVol();if(document.body.classList.contains('showHelp'))setHelp(false)});
+let vol=.7; try{const v=localStorage.getItem('tako_vol');if(v!=null)vol=+v}catch(e){}
+function applyVol(){
+  muted=vol<=0.001;
+  $('mute').innerHTML=muted?ICO.vmu:vol<.4?ICO.vlo:ICO.vhi;
+  $('volR').value=Math.round(vol*100); $('volN').textContent=Math.round(vol*100)+'%';
+  if(ac&&master) master.gain.setTargetAtTime(muted?0:vol,ac.currentTime,.03);
+  try{localStorage.setItem('tako_vol',vol)}catch(e){}
+}
+let lastVol=.7;
+$('mute').onclick=e=>{e.stopPropagation();initAudio();let r=$('mute').getBoundingClientRect();if(!r.width)r=$('burger').getBoundingClientRect();const vp=$('volPop');vp.style.top=(r.bottom+6)+'px';vp.style.right=Math.max(8,innerWidth-r.right)+'px';if(vp.classList.contains('show'))closeVol();else{vp.classList.add('show');holdPause('vol')}};
+$('volR').oninput=e=>{vol=e.target.value/100;applyVol()};
+$('volR').onchange=()=>blip(660);
+$('volMute').onclick=()=>{if(vol>0){lastVol=vol;vol=0}else vol=lastVol||.7;applyVol()};
+$('volPop').onclick=e=>e.stopPropagation();
+/* ---------- BGM ---------- */
+var bgmGain=null,bgmTimer=null,bgmNext=0,bgmStep=0,bgmAudio=null,bgmSrc=null,bgmMode='builtin';
+let bgmVol=.5,bgmLast=.5; try{const v=localStorage.getItem('tako_bgm');if(v!=null)bgmVol=+v}catch(e){}
+const MEL=[74,0,71,69,71,0,74,0, 76,74,71,0,69,0,0,0, 67,0,69,71,69,0,67,64, 62,0,64,67,69,0,0,0,
+           74,0,76,0,74,71,69,0, 71,0,74,71,69,0,67,0, 64,67,69,0,71,69,67,64, 62,0,0,0,62,0,64,67];
+const BASS=[50,50,55,57,50,55,52,50];
+const mhz=m=>440*Math.pow(2,(m-69)/12);
+function bgmNote(type,f,t,dur,vol,lpf){
+  const o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f,t);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+.008);g.gain.exponentialRampToValueAtTime(.0008,t+dur);
+  if(lpf){const fl=ac.createBiquadFilter();fl.type='lowpass';fl.frequency.value=lpf;o.connect(fl).connect(g)}else o.connect(g);
+  g.connect(bgmGain);o.start(t);o.stop(t+dur+.02);
+}
+function bgmPlayStep(i,t){
+  const m=MEL[i]; if(m){bgmNote('square',mhz(m),t,.28,.07,2200);bgmNote('triangle',mhz(m+12),t,.18,.03)}
+  if(i%4===0) bgmNote('sine',mhz(BASS[Math.floor(i/8)]-(i%8===4?-7:0)),t,.32,.16);
+  if(i%8===0||i%8===5){const o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(130,t);o.frequency.exponentialRampToValueAtTime(48,t+.16);
+    g.gain.setValueAtTime(.35,t);g.gain.exponentialRampToValueAtTime(.001,t+.3);o.connect(g).connect(bgmGain);o.start(t);o.stop(t+.32)}
+  if(i%2===1){const s=ac.createBufferSource();s.buffer=nbuf;const f=ac.createBiquadFilter();f.type='bandpass';f.frequency.value=3200;
+    const g=ac.createGain();g.gain.setValueAtTime(.05,t);g.gain.exponentialRampToValueAtTime(.001,t+.04);s.connect(f).connect(g).connect(bgmGain);s.start(t,Math.random());s.stop(t+.05)}
+}
+function bgmSched(){const step=60/104/2;while(bgmNext<ac.currentTime+.25){bgmPlayStep(bgmStep,bgmNext);bgmNext+=step;bgmStep=(bgmStep+1)%MEL.length}}
+function bgmStartBuiltin(){
+  if(!ac) return; bgmStopFile(); bgmMode='builtin';
+  if(!bgmTimer){bgmNext=ac.currentTime+.1;bgmStep=0;bgmTimer=setInterval(bgmSched,60)}
+  $('bgmName').textContent='播放中：內建祭典曲';
+}
+function bgmPause(){if(bgmAudio)bgmAudio.pause();bgmStopBuiltin()}
+function bgmResume(){if(!ac)return;if(bgmMode==='file'&&bgmAudio)bgmAudio.play().catch(()=>{});else if(bgmMode==='builtin')bgmStartBuiltin()}
+function bgmStopBuiltin(){if(bgmTimer){clearInterval(bgmTimer);bgmTimer=null}}
+function bgmStopFile(){if(bgmAudio){bgmAudio.pause();bgmAudio=null}}
+function bgmPlayUrl(url,name,onFail){
+  bgmStopBuiltin(); bgmStopFile();
+  const a=new Audio(url); a.loop=true; bgmAudio=a;
+  try{const tg=ac.createGain();tg.gain.value=.28;ac.createMediaElementSource(a).connect(tg).connect(bgmGain)}catch(err){}
+  a.play().then(()=>{bgmMode='file';$('bgmName').textContent='播放中：'+name;if(paused)a.pause()}).catch(()=>{if(bgmAudio===a)bgmAudio=null;onFail&&onFail()});
+}
+let stallUrl=null,stallLoad=null;
+function loadStall(){if(stallLoad)return stallLoad;stallLoad=fetch('bgm.dat').then(r=>{if(!r.ok)throw 0;return r.arrayBuffer()}).then(buf=>{
+  const u=new Uint8Array(buf),n=u.length,o=new Uint8Array(n),K='TakoyakiHouse-2026',k=K.length;
+  for(let i=0;i<n;i++)o[i]=u[n-1-i]^K.charCodeAt(i%k)^((i*37)&255);
+  stallUrl=URL.createObjectURL(new Blob([o],{type:'audio/mpeg'}));return stallUrl}).catch(()=>null);return stallLoad}
+setTimeout(loadStall,800);
+function bgmStartStall(){ if(!ac) return;
+  if(stallUrl){bgmPlayUrl(stallUrl,'店內音樂',()=>bgmStartBuiltin());return}
+  loadStall().then(u=>{if(u)bgmPlayUrl(u,'店內音樂',()=>bgmStartBuiltin());else bgmStartBuiltin()}) }
+function bgmInit(){
+  if(!ac||bgmGain) return;
+  bgmGain=ac.createGain();bgmGain.gain.value=bgmVol;bgmGain.connect(ac.destination);bgmStartStall();
+}
+function applyBgm(){
+  $('bgmR').value=Math.round(bgmVol*100);$('bgmN').textContent=Math.round(bgmVol*100)+'%';
+  if(bgmGain) bgmGain.gain.setTargetAtTime(bgmVol,ac.currentTime,.05);
+  try{localStorage.setItem('tako_bgm',bgmVol)}catch(e){}
+}
+$('bgmR').oninput=e=>{bgmVol=e.target.value/100;applyBgm()};
+$('bgmMute').onclick=()=>{if(bgmVol>0){bgmLast=bgmVol;bgmVol=0}else bgmVol=bgmLast||.5;applyBgm()};
+$('bgmPick').onclick=()=>$('bgmFile').click();
+$('bgmBuilt').onclick=()=>{initAudio();bgmStartBuiltin()};
+$('bgmStall').onclick=()=>{initAudio();bgmStartStall()};
+$('bgmFile').onchange=e=>{
+  const f=e.target.files[0]; if(!f) return; initAudio(); if(!ac) return;
+  bgmPlayUrl(URL.createObjectURL(f),f.name,()=>{toast('這個檔案播不了，換一個試試');bgmStartStall()});
+  e.target.value='';
+};
+applyBgm();
+
+applyVol();
+$('pause').onclick=e=>{
+  if(e&&e.stopPropagation)e.stopPropagation();
+  if(game!=='play') return;
+  if($('modal').classList.contains('show')&&$('res').querySelector('.pausebox')){
+    hideModal(); holds.delete('btn'); if(!holds.size){paused=false;bgmResume()} syncPauseIcon(); return;
+  }
+  if(modalOpen) return;
+  closeVol(); holdPause('btn');
+  showModal('<div class="pausebox">⏸ 暫停中</div><p>鐵板和客人都會等你</p><button class="big serve" id="resume" style="width:100%">繼續營業</button>');
+  $('resume').onclick=()=>$('pause').click();
+};
+
+
+/* ---------- celebration ---------- */
+function confetti(){
+  const cv=$('confetti'), x=cv.getContext('2d'); const W=cv.width=innerWidth, H=cv.height=innerHeight;
+  const cols=['#ff5a4a','#ffcf4a','#7ee07e','#6fb6ff','#ff8ad8','#fff'];
+  const P=[];
+  const shoot=(sx,dir,n)=>{for(let i=0;i<n;i++){const a=(-Math.PI/2)+dir*rand(.15,.75),v=rand(9,19);
+    P.push({x:sx,y:H,vx:Math.cos(a)*v,vy:Math.sin(a)*v,r:rand(0,6),vr:rand(-.3,.3),w:rand(6,11),h:rand(4,8),c:pick(cols),life:rand(2.5,4)})}};
+  shoot(0,1,110); shoot(W,-1,110);
+  setTimeout(()=>{shoot(W*.25,.3,60);shoot(W*.75,-.3,60);burst(.35,.4,1200)},700);
+  setTimeout(()=>{shoot(0,1,70);shoot(W,-1,70);burst(.35,.4,1200)},1400);
+  let lt=performance.now();
+  (function f(t){const dt=Math.min(.05,(t-lt)/1000);lt=t;x.clearRect(0,0,W,H);
+    for(let i=P.length-1;i>=0;i--){const p=P[i];p.vy+=22*dt;p.vx*=.99;p.x+=p.vx*dt*60;p.y+=p.vy*dt*60;p.r+=p.vr;p.life-=dt;
+      if(p.life<=0||p.y>H+20){P.splice(i,1);continue}
+      x.save();x.translate(p.x,p.y);x.rotate(p.r);x.globalAlpha=Math.min(1,p.life);x.fillStyle=p.c;x.fillRect(-p.w/2,-p.h/2,p.w,p.h*Math.abs(Math.cos(p.r*2)));x.restore()}
+    if(P.length) requestAnimationFrame(f); else x.clearRect(0,0,W,H)})(lt);
+}
+function fanfare(){burst(.4,.4,1200);[523,659,784,1047,784,1047,1319].forEach((f,i)=>blip(f,.1+i*.13))}
+
+/* ---------- audio ---------- */
+var ac,nbuf,sg,master;
+function initAudio(){
+  if(ac){if(ac.state==='suspended')ac.resume();return}
+  try{
+    ac=new (window.AudioContext||window.webkitAudioContext)();
+    const len=ac.sampleRate*2; nbuf=ac.createBuffer(1,len,ac.sampleRate); const d=nbuf.getChannelData(0);
+    for(let i=0;i<len;i++) d[i]=(Math.random()*2-1)*(Math.random()<.015?1:.3);
+    const src=ac.createBufferSource(); src.buffer=nbuf; src.loop=true;
+    const hp=ac.createBiquadFilter(); hp.type='highpass'; hp.frequency.value=2600;
+    const lp=ac.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=9000;
+    master=ac.createGain(); master.gain.value=muted?0:vol; master.connect(ac.destination);
+    sg=ac.createGain(); sg.gain.value=0; src.connect(hp).connect(lp).connect(sg).connect(master); src.start();
+  }catch(e){ac=null}
+  bgmInit();
+}
+function burst(vol,dur,freq){
+  if(!ac||muted) return;
+  const s=ac.createBufferSource(); s.buffer=nbuf; const f=ac.createBiquadFilter(); f.type='bandpass'; f.frequency.value=freq; f.Q.value=.6;
+  const g=ac.createGain(), t=ac.currentTime; g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(.001,t+dur);
+  s.connect(f).connect(g).connect(master); s.start(t,Math.random()); s.stop(t+dur);
+}
+function blip(fr,when=0){
+  if(!ac||muted) return;
+  const o=ac.createOscillator(), g=ac.createGain(), t=ac.currentTime+when; o.type='sine'; o.frequency.setValueAtTime(fr,t); o.frequency.exponentialRampToValueAtTime(fr*1.5,t+.08);
+  g.gain.setValueAtTime(.08,t); g.gain.exponentialRampToValueAtTime(.001,t+.15); o.connect(g).connect(master); o.start(t); o.stop(t+.16);
+}
+function chime(st){[523,659,784,1047].slice(0,st+1).forEach((f,i)=>blip(f,i*.12))}
+
+/* ---------- loop ---------- */
+let last=performance.now();
+function frame(t){
+  const dt=Math.min(.1,(t-last)/1000); last=t; let cooking=0;
+  const run=!paused&&game==='play'&&!inMenu;
+  holes.forEach((h,i)=>{
+    if(run&&h.st!=='empty'){ if(h.down==='a') h.a=Math.min(200,h.a+RATE*heat*h.k*dt); else h.b=Math.min(200,h.b+RATE*heat*h.k*dt); cooking++ }
+    draw(i);
+  });
+  if(run&&!modalOpen){updateCustomers(dt);evUpdate(dt)}
+  if(ac&&sg){
+    const hot=holes.filter(h=>h.st!=='empty'&&(h.down==='a'?h.a:h.b)>115).length;
+    const on=!muted&&run&&cooking>0;
+    sg.gain.setTargetAtTime(on?Math.min(.28,(.03+cooking*.016+hot*.012)*heat*rand(.8,1.2)):0,ac.currentTime,.12);
+    if(on&&Math.random()<cooking*heat*dt*2.5) burst(rand(.05,.14),rand(.03,.07),rand(2500,6500));
+    if(on&&hot&&Math.random()<hot*dt*1.5) burst(rand(.08,.16),rand(.05,.1),rand(1200,2500));
+  }
+  requestAnimationFrame(frame);
+}
+saveCoins(); renderPlate(); renderQueue(); renderProg(); showMenu(); requestAnimationFrame(frame);
+</script>
+</body>
+</html>
