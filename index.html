@@ -99,7 +99,7 @@ body.free .queueWrap{display:none} body.free .freeBanner{display:block}
 .tops>*{position:absolute;transform:translate(-50%,-50%) rotate(var(--r));animation:pop .25s ease-out}
 .hole{container-type:inline-size}
 .tops>.emo{font-size:33cqw}
-.tops>.bit{transform:translate(-50%,-50%) rotate(var(--r)) scale(2)}
+.tops>.bit{transform:translate(-50%,-50%) rotate(var(--r)) scale(var(--bs,2))}
 @keyframes pop{from{transform:translate(-50%,-50%) scale(0)}}
 .emo{font-size:clamp(11px,2.2vw,17px);line-height:1}
 .bit{display:block}
@@ -1168,6 +1168,10 @@ function frame(t){
   requestAnimationFrame(frame);
 }
 saveCoins(); renderPlate(); renderQueue(); renderProg(); showMenu(); requestAnimationFrame(frame);
+
+// keep hand-drawn toppings (negi/ginger/tenkasu/mochi) proportional to the hole size
+(()=>{const fit=()=>{const h=document.querySelector('.hole');if(h){const w=h.getBoundingClientRect().width;if(w)document.documentElement.style.setProperty('--bs',(w/50.5).toFixed(3))}};
+ if(window.ResizeObserver){const ro=new ResizeObserver(fit);const t=setInterval(()=>{const h=document.querySelector('.hole');if(h){ro.observe(h);fit();clearInterval(t)}},200)}else{addEventListener('resize',fit);setTimeout(fit,300)}})();
 </script>
 </body>
 </html>
