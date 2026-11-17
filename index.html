@@ -219,11 +219,25 @@ html,body{height:100%;overflow:hidden}
 .tbtns{gap:min(14px,2vh)!important;margin-top:2vh!important}
 #title{gap:2vh!important}
 canvas#c{touch-action:none!important}
+.hs .nw{white-space:nowrap;display:inline-block}
+@media (pointer:coarse){
+ #modal .okbtn{font-size:26px!important;padding:.45em 2.2em!important}
+ #modal .okbtn.art{width:280px!important;font-size:30px!important;padding:0 0 2.2%!important}
+ .resume{font-size:3.2cqw!important;padding:.45em 2.2em!important}
+}
+#modal .pgh{display:flex;flex-direction:column;gap:12px;align-items:center}
+@media (max-height:560px){
+ #modal .card{padding:12px 22px 20px!important;max-height:94vh;overflow:auto}
+ #modal h2{font-size:24px!important;margin:0 0 2px!important}#modal .sub{margin-bottom:6px!important}
+ #modal .pgh{flex-direction:row;gap:10px}
+ #modal .pgh .okbtn{font-size:20px!important;padding:.4em 1.1em!important}
+ #mcard:has(.pgh){width:min(94vw,560px)!important}
+}
 </style></head><body>
 <div id="rotate"><div class="ph"></div><div>請把手機轉成橫向<br><small style="font-size:15px;opacity:.75">章魚燒屋要橫著玩喔！</small></div></div>
 <div id="title"><div id="rain"></div><button class="titleInfo" id="titleInfo" title="關於這個遊戲">i</button><div class="logoWrap"><div class="logo"><span>章</span><span>魚</span><span>燒</span><span>屋</span></div></div><div class="logoSub">TAKOYAKI HOUSE</div>
 <div class="tbtns"><button class="tbtn" id="btnStart"><img src="btn_start.webp" alt=""><span>開始遊戲</span></button><button class="tbtn" id="btnHow"><img src="btn_how.webp" alt=""><span>玩法說明</span></button></div></div>
-<div id="howto" class="hide"><div class="hsh"><div class="card hcard"><h2>玩法說明</h2><div class="hwrap"><button class="harr l" id="hPrev">‹</button><div class="htrack" id="hTrack"><div class="hs"><div class="himg"><img src="how_1.jpg" alt=""></div><h3><span>1</span>倒麵糊</h3><p>點「麵糊」（Z），再點空格倒麵糊。<br><mark>按住拖曳</mark>可以一次倒好幾格，也可以按「倒滿」（A）一次倒滿。<br><span class="hnote">※ iPhone 無法全螢幕，建議用 Safari 的「分享 → 加入主畫面」再打開來玩，畫面會比較大。</span></p></div><div class="hs"><div class="himg"><img src="how_2.jpg" alt=""></div><h3><span>2</span>加配料</h3><p>選配料碗（1～9），點麵糊加料，點幾下就放幾份。<br><mark>配料要在翻面前加好喔！</mark></p></div><div class="hs"><div class="himg"><img src="how_3.jpg" alt=""></div><h3><span>3</span>看熟度、翻面</h3><p>格子右上的讀條：<b class="cy">淺黃</b>跑滿就能用竹籤（X）翻面，<b class="co">橘色</b>是正在烤，跑到<b class="cg">綠色</b>代表這面烤好了，出現<b class="cr">「!」</b>就快焦了！兩面都要烤好，旋鈕可以調小、中、大火。</p></div><div class="hs"><div class="himg"><img src="how_4.jpg" alt=""></div><h3><span>4</span>夾到舟皿</h3><p>兩面都烤好後，點兩下（電腦可按右鍵）夾到舟皿，<mark>按住拖曳</mark>可以一次夾好幾顆。烤壞的用垃圾桶（C）丟掉。</p></div><div class="hs"><div class="himg"><img src="how_5.jpg" alt=""></div><h3><span>5</span>淋醬料</h3><p>點醬料瓶就會淋在舟皿裡所有章魚燒上，再點一次可以拿掉。<br>「清盤」會先清掉醬料，再按一次才倒掉章魚燒。</p></div><div class="hs"><div class="himg"><img src="how_6.jpg" alt=""></div><h3><span>6</span>照收據上菜</h3><p>收據上有顆數、配料和醬料（<b class="cg">綠勾要加</b>、<b class="cr">紅叉不要</b>）。<br>準備好就按「上菜！」，頭上有<mark>箭頭</mark>的是上菜對象，點別的客人可以換人。<br><mark>等太久或做錯會扣錢，錢變負的就破產！</mark></p></div><div class="hs"><div class="himg"><img src="how_7.jpg" alt=""></div><h3><span>7</span>突發事件</h3><p><b>醉漢</b>：連點趕走他，<mark>沒趕走的話客人會更不耐煩</mark>。<br><b>油漬</b>：一個個點掉，<mark>擦乾淨前不能做其他事</mark>。<br><b>貓</b>：在牠走到舟皿前點牠，不然會被偷走一顆。<br><b>停電</b>：指針在<b class="cg">綠色區</b>時點發電機（或按空白鍵）拉繩。</p></div></div><button class="harr r" id="hNext">›</button></div><div class="hdots" id="hDots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div style="text-align:center;margin-top:10px"><button class="okbtn" id="btnHowOk">知道了</button></div></div></div></div></div>
+<div id="howto" class="hide"><div class="hsh"><div class="card hcard"><h2>玩法說明</h2><div class="hwrap"><button class="harr l" id="hPrev">‹</button><div class="htrack" id="hTrack"><div class="hs"><div class="himg"><img src="how_1.jpg" alt=""></div><h3><span>1</span>倒麵糊</h3><p>點「麵糊」（Z），再點空格倒麵糊。<br><mark>按住拖曳</mark>可以一次倒好幾格，也可以按「倒滿」（A）一次倒滿。<br><span class="hnote">※ iPhone 無法全螢幕，建議用 Safari 的「分享 → 加入主畫面」再打開來玩，畫面會比較大。</span></p></div><div class="hs"><div class="himg"><img src="how_2.jpg" alt=""></div><h3><span>2</span>加配料</h3><p>選配料碗（1～9），點麵糊加料，點幾下就放幾份。<br><mark>配料要在翻面前加好喔！</mark></p></div><div class="hs"><div class="himg"><img src="how_3.jpg" alt=""></div><h3><span>3</span>看熟度、翻面</h3><p>格子右上的讀條：<b class="cy">淺黃</b>跑滿就能用竹籤（X）翻面，<b class="co">橘色</b>是正在烤，跑到<b class="cg">綠色</b>代表這面烤好了，出現<b class="cr">「!」</b>就快焦了！兩面都要烤好，旋鈕可以調小、中、大火。</p></div><div class="hs"><div class="himg"><img src="how_4.jpg" alt=""></div><h3><span>4</span>夾到舟皿</h3><p>兩面都烤好後，點兩下（電腦可按右鍵）夾到舟皿，<mark>按住拖曳</mark>可以一次夾好幾顆。烤壞的用垃圾桶（C）丟掉。</p></div><div class="hs"><div class="himg"><img src="how_5.jpg" alt=""></div><h3><span>5</span>淋醬料</h3><p>點醬料瓶就會淋在舟皿裡所有章魚燒上，再點一次可以拿掉。<br>「清盤」會先清掉醬料，再按一次才倒掉章魚燒。</p></div><div class="hs"><div class="himg"><img src="how_6.jpg" alt=""></div><h3><span>6</span>照收據上菜</h3><p>收據上有顆數、配料和醬料（<b class="cg">綠勾要加</b>、<b class="cr">紅叉不要</b>）。<br>準備好就按「上菜！」，頭上有<mark>箭頭</mark>的是上菜對象，點別的客人可以換人。<br><mark>等太久或做錯會扣錢，錢變負的就破產！</mark></p></div><div class="hs"><div class="himg"><img src="how_7.jpg" alt=""></div><h3><span>7</span>突發事件</h3><p><b>醉漢</b>：連點趕走他，<mark class="nw">沒趕走會使客人更不耐煩。</mark><br><b>油漬</b>：一個個點掉，<mark class="nw">擦乾淨前不能做其他事。</mark><br><b>貓</b>：在牠走到舟皿前點牠，<span class="nw">不然會被偷走一顆。</span><br><b>停電</b>：指針在<b class="cg">綠色區</b>時點發電機<span class="nw">（或按空白鍵）拉繩。</span></p></div></div><button class="harr r" id="hNext">›</button></div><div class="hdots" id="hDots"><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><div style="text-align:center;margin-top:10px"><button class="okbtn" id="btnHowOk">知道了</button></div></div></div></div></div>
 <svg width="0" height="0" style="position:absolute"><filter id="stampInk"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="7" result="n"/><feColorMatrix in="n" type="matrix" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 -2.2 1.9" result="m"/><feComposite in="SourceGraphic" in2="m" operator="in"/></filter><filter id="chalkRough"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="3"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 -1.6 1.25"/><feComposite in="SourceGraphic" operator="in"/></filter></svg>
 <div id="menu" class="hide"><div class="board"><button class="infoBtn" id="howBtn2" title="玩法說明" style="right:calc(9% + 5.4cqw);font-family:Marker,sans-serif;font-style:normal">?</button><button class="infoBtn" id="infoBtn" title="關於這個遊戲">i</button><div class="chalk">
 <div class="sub" style="font-size:2.4cqw;color:#ffe08a;margin-bottom:.2cqw">選一個營業模式開店吧！</div><div class="sub" style="margin-top:0;margin-bottom:2cqw">氣走客人或做錯會扣錢，錢變負的就破產結束！</div>
@@ -311,9 +325,9 @@ let last=performance.now(),T=0;
 
 function update(dt){if(dt<=0)return;
   holes.forEach(h=>{
-    if(h.st==='batter'){h.fill=Math.min(1,h.fill+dt*2.2);h.cookA=Math.min(2.2,h.cookA+dt*(h.cookA<.35?.044:.12)*heat*h.k*(h.cookA>1?.45:1))}
+    if(h.st==='batter'){h.fill=Math.min(1,h.fill+dt*6);h.cookA=Math.min(2.2,h.cookA+dt*(h.cookA<.35?.044:.12)*heat*h.k*(h.cookA>1?.45:1))}
     if(h.st==='ball'){
-      if(h.rolling){h.roll+=dt*2.6;if(h.roll>=1){h.rolling=0;h.roll=0;h.side=h.side==='A'?'B':'A'}}
+      if(h.rolling){h.roll+=dt*5.5;if(h.roll>=1){h.rolling=0;h.roll=0;h.side=h.side==='A'?'B':'A'}}
       // the side facing down cooks
       const sl=v=>v>1?.45:1;if(h.side==='A')h.cookB=Math.min(2.2,h.cookB+dt*.12*heat*h.k*sl(h.cookB));else h.cookA=Math.min(2.2,h.cookA+dt*.12*heat*h.k*sl(h.cookA))
     }
@@ -602,7 +616,7 @@ function customers(dt){
      const im=IMG['face_'+fk+'.webp'];if(im&&im.complete&&im.naturalWidth){const p=Math.min(1,(T-c._ft)/.35),pop=p<1?1+Math.sin(p*Math.PI)*.35:1,shk=fk==='angry'?Math.sin(T*30)*1.5:0,sz=40*pop,w=sz*im.naturalWidth/im.naturalHeight;
        ctx.drawImage(im,headX-w/2+shk,headY-sz/2,w,sz)}}
     // who gets the next serve
-    if(c===tg&&live>1&&!c.out){const ay=yb-H-8+Math.sin(T*6)*5,ai=IMG['ui_arrow.webp'];if(ai&&ai.complete&&ai.naturalWidth){const ah=34,aw=ah*ai.naturalWidth/ai.naturalHeight;ctx.drawImage(ai,x-aw/2,ay-ah,aw,ah)}}
+    if(c===tg&&live>1&&!c.out){const ay=yb-H-8+Math.sin(T*6)*5,ai=IMG['ui_arrow.webp'];if(ai&&ai.complete&&ai.naturalWidth){const ah=52,aw=ah*ai.naturalWidth/ai.naturalHeight;ctx.drawImage(ai,x-aw/2,ay-ah,aw,ah)}}
     const bw=158,bx=x+pw+10;let by=110+bob*.5;
     c.hit=[x-W/2,yb-H,bx+bw*US,yb];
     if(sa<=0)return;
@@ -664,7 +678,7 @@ function trayAndSauces(){
   const SV=(sv,i,x,y,rad)=>{bp.push([x,y,rad]);
     if(tyOk(4))tyBall(dShow(sv),x,y,rad);else{let g=ctx.createRadialGradient(x-rad*.35,y-rad*.4,2,x,y,rad);g.addColorStop(0,'#f6c886');g.addColorStop(.7,'#c98440');g.addColorStop(1,'#8a4e1e');ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,rad,0,7);ctx.fill();}
     for(let k=0;k<6;k++){const a=i*2+k*1.9;ctx.fillStyle='rgba(110,55,20,.3)';ctx.beginPath();ctx.arc(x+Math.cos(a)*rad*.55,y+Math.sin(a)*rad*.5,1.8,0,7);ctx.fill()}
-    if(ovOk()){if(sv.sa!=null&&sv.sa<1)sv.sa=Math.min(1,sv.sa+.04);drawOv(x,y,rad,sv,i,sv.sa==null?1:sv.sa)}
+    if(ovOk()){if(sv.sa!=null&&sv.sa<1){const n=performance.now();sv.sa=Math.min(1,sv.sa+Math.min(.1,(n-(sv.saT||n))/1000)/.22);sv.saT=n;if(sv.sa>=1)sv.saT=0}drawOv(x,y,rad,sv,i,sv.sa==null?1:sv.sa)}
     else{if(sv.sauce){let sg=ctx.createRadialGradient(x-rad*.2,y-rad*.4,1,x,y-rad*.2,rad*.85);sg.addColorStop(0,'#8a4a22');sg.addColorStop(1,'#4a2210');ctx.fillStyle=sg;ctx.beginPath();ctx.ellipse(x,y-rad*.22,rad*.84,rad*.64,0,0,7);ctx.fill();ctx.fillStyle='rgba(255,255,255,.5)';ctx.beginPath();ctx.ellipse(x-rad*.3,y-rad*.5,rad*.22,rad*.08,-.5,0,7);ctx.fill()}
     if(sv.mayo){ctx.strokeStyle='#fff8e6';ctx.lineWidth=3;ctx.lineCap='round';ctx.beginPath();for(let k=0;k<=5;k++){const px=x-rad*.6+k*rad*.24,py=y-rad*.28+(k%2?6:-6);k?ctx.lineTo(px,py):ctx.moveTo(px,py)}ctx.stroke()}
     if(sv.flake){for(let k=0;k<4;k++){const w=Math.sin(T*6+k+i);ctx.save();ctx.translate(x-12+k*8,y-rad*.62);ctx.rotate(w*.5+k);ctx.scale(1,.6+.4*Math.abs(w));ctx.fillStyle=k%2?'#e9b98a':'#d79a6a';ctx.beginPath();ctx.ellipse(0,0,7,3,0,0,7);ctx.fill();ctx.restore()}}
@@ -725,7 +739,7 @@ function hud(){
   if(CFG.free)ctx.fillText(CFG.label,30,77);
   else if(CFG.hearts){for(let i=0;i<CFG.hearts;i++){const hx=34+i*26,hy=72,on=i<HEARTS;ctx.fillStyle=on?'#ff5a6a':'rgba(255,255,255,.25)';ctx.beginPath();ctx.moveTo(hx,hy+7);ctx.bezierCurveTo(hx-12,hy-1,hx-7,hy-11,hx,hy-4);ctx.bezierCurveTo(hx+7,hy-11,hx+12,hy-1,hx,hy+7);ctx.fill()}ctx.fillStyle='#fff3dc';ctx.fillText('第 '+(SN+1)+' 位',112,77)}
   else ctx.fillText(CFG.label+'　客人 '+Math.min(SN+LEFTN,CFG.total)+'/'+CFG.total,30,77);
-  btn3d('restart',FW-202,30,44,36,'img:ui_restart',RS_ARM&&performance.now()-RS_ARM<2500?'#c8382c':'#7a4524','#3a1c0c','#fff3dc',25);btn3d('pause',FW-150,30,44,36,'img:ui_pause','#7a4524','#3a1c0c','#fff3dc',20);btn3d('menu',FW-98,30,44,36,'img:ui_menu','#7a4524','#3a1c0c','#fff3dc',19);btn3d('vol',FW-46,30,44,36,'img:ui_vol','#7a4524','#3a1c0c','#fff3dc',20);
+  {const k=COARSE?1.45:1,bw=44*k,bh=36*k,gp=8*k,y0=12+bh/2,x0=FW-12-bw/2;btn3d('restart',x0-3*(bw+gp),y0,bw,bh,'img:ui_restart',RS_ARM&&performance.now()-RS_ARM<2500?'#c8382c':'#7a4524','#3a1c0c','#fff3dc',25*k);btn3d('pause',x0-2*(bw+gp),y0,bw,bh,'img:ui_pause','#7a4524','#3a1c0c','#fff3dc',20*k);btn3d('menu',x0-(bw+gp),y0,bw,bh,'img:ui_menu','#7a4524','#3a1c0c','#fff3dc',19*k);btn3d('vol',x0,y0,bw,bh,'img:ui_vol','#7a4524','#3a1c0c','#fff3dc',20*k)}
 }
 
 // ---------- serve: coin burst flying to the wallet ----------
@@ -770,9 +784,9 @@ let EVTXT=null;function toastEvt(t,c){EVTXT={t,a:0,c:c||'rgba(200,56,44,.92)'}}
 function toast(t,warn){toastEvt(t,warn?'rgba(200,56,44,.94)':'rgba(70,36,14,.92)')}
 function evtClick(x,y){if(!EVT)return false;sfx.lastEvt=1;const E=EVT;
   if(E.k==='drunk'){const P=drunkPos(E);if(P.k>.5&&Math.hypot(x-P.cx,y-(E.m==='top'?P.cy+70:P.cy))<85){E.n++;E.hit=.15;sfx('hit',E.n);if(E.n>=E.need){E.done=1;E.t=E.max-.6;toast('醉漢被趕走了！');sfx('win')}else if(E.n%2===0){E.hop=.25}return true}}
-  if(E.k==='oil'){for(const p of E.spots)if(p.alive&&Math.hypot(x-p.x,y-p.y)<44*p.s){p.alive=0;p.pop=.3;sfx('wipe');if(E.spots.every(q=>!q.alive)){E.done=1;toast('檯面亮晶晶！');sfx('win');E.t=E.max-.5}return true}}
-  if(E.k==='power'&&!E.on&&!E.fail&&x>GEN.x-150&&x<GEN.x+170&&y>GEN.y-190&&y<GEN.y+130){genPull();return true}
-  if(E.k==='cat'&&!E.flee&&!E.stole&&Math.abs(x-E.x)<70&&Math.abs(y-E.y)<60){E.flee=1;E.done=1;toast('貓被嚇跑了！');sfx('meow');return true}
+  if(E.k==='oil'){for(const p of E.spots)if(p.alive&&Math.hypot(x-p.x,y-p.y)<64*p.s){p.alive=0;p.pop=.3;sfx('wipe');if(E.spots.every(q=>!q.alive)){E.done=1;toast('檯面亮晶晶！');sfx('win');E.t=E.max-.5}return true}}
+  if(E.k==='power'&&!E.on&&!E.fail&&x>GEN.x-190&&x<GEN.x+210&&y>GEN.y-220&&y<GEN.y+170){genPull();return true}
+  if(E.k==='cat'&&!E.flee&&!E.stole&&Math.abs(x-E.x)<95&&Math.abs(y-E.y)<80){E.flee=1;E.done=1;toast('貓被嚇跑了！');sfx('meow');return true}
   return false}
 function drawToast(dt){if(EVTXT){EVTXT.a+=dt;if(EVTXT.a>2.6)EVTXT=null;else{const al=Math.min(1,EVTXT.a/.2,(2.6-EVTXT.a)/.4);ctx.save();ctx.globalAlpha=al;ctx.font='22px Marker,sans-serif';const w=ctx.measureText(EVTXT.t).width+40;ctx.fillStyle=EVTXT.c;rr(FW/2-w/2,338,w,40,20);ctx.fill();ctx.fillStyle='#fff';ctx.textAlign='center';ctx.fillText(EVTXT.t,FW/2,365);ctx.restore()}}}
 function drawEvt(dt){if(!EVT)return;const E=EVT;E.t+=dt;if(E.t>E.max){evEnd(E);EVT=null;return}
@@ -793,12 +807,12 @@ function drawEvt(dt){if(!EVT)return;const E=EVT;E.t+=dt;if(E.t>E.max){evEnd(E);E
         sfx('meow');if(PL.length){const sv=PL.pop();E.ball=sv;toast('可惡！被貓偷走一顆章魚燒…',1)}else toast('盒子空空，貓失望地走了')}}
     let hop=0;if(E.stole&&E.jt<.35){E.jt+=dt;hop=Math.sin(E.jt/.35*Math.PI)*50}
     else if(E.flee){E.x-=E.d*dt*600;E.y-=dt*(E.stole?40:120);if(E.x<-200||E.x>FW+200){EVT=null;return}}
-    const w=120,h=w*im.naturalHeight/im.naturalWidth,bob=Math.abs(Math.sin(E.t*10))*4;ctx.save();ctx.translate(E.x,E.y-bob-hop);ctx.scale((E.flee&&!(E.stole&&E.jt<.35))?-E.d:E.d,1);ctx.drawImage(im,-w/2,-h/2,w,h);
-    if(E.ball){const r=20,bx=w*.33,by=0;if(tyOk(4))tyBall(dShow(E.ball),bx,by,r);if(ovOk()){const sv=E.ball;sv.sa=1;drawOv(bx,by,r,sv,7,1)}}
+    const w=165,h=w*im.naturalHeight/im.naturalWidth,bob=Math.abs(Math.sin(E.t*10))*4;ctx.save();ctx.translate(E.x,E.y-bob-hop);ctx.scale((E.flee&&!(E.stole&&E.jt<.35))?-E.d:E.d,1);ctx.drawImage(im,-w/2,-h/2,w,h);
+    if(E.ball){const r=26,bx=w*.33,by=0;if(tyOk(4))tyBall(dShow(E.ball),bx,by,r);if(ovOk()){const sv=E.ball;sv.sa=1;drawOv(bx,by,r,sv,7,1)}}
     ctx.restore();
     if(E.flee&&!E.stole){ctx.fillStyle='#fff';ctx.font='26px Marker,sans-serif';ctx.textAlign='center';ctx.fillText('！',E.x,E.y-60)}}
   if(E.k==='power')drawPower(E,dt)}
-const GEN={x:640,y:430,w:250};
+const GEN={x:640,y:420,w:330};
 function genPull(){const E=EVT;if(!E||E.k!=='power'||E.on||E.fail||E.pull>0||E.cool>0)return;
   const p=.5-.5*Math.cos(E.t*3.4),ok=Math.abs(p-E.zc)<E.zw/2;E.pull=.45;E.shake=.3;
   for(let i=0;i<(ok?6:2);i++)E.puffs.push({x:0,y:0,vx:20+Math.random()*30,vy:-60-Math.random()*40,t:0,s:ok?1:.6,dark:!ok});
@@ -1071,7 +1085,7 @@ function start(key){
   toast(CFG.free?'自由烤：想怎麼烤就怎麼烤！':'開店囉！'+CFG.label+'模式・目標 '+CFG.target+(CFG.hearts?'':''));
 }
 function pauseGame(){if(G!=='play'||MODAL)return;PAUSE=true;bgmPause();
-  showModal('pause',`<h2>暫停中</h2><div class="sub">鐵板和客人都會等你</div><div class="row2" style="flex-direction:column;align-items:center;gap:12px"><button class="okbtn art" id="mResume">繼續營業</button><button class="okbtn ghost" id="mHow">玩法說明</button><button class="okbtn ghost" id="mRestart">重新開始</button><button class="okbtn ghost" id="mMenu">選擇關卡</button></div>`);
+  showModal('pause',`<h2>暫停中</h2><div class="sub">鐵板和客人都會等你</div><div class="row2" style="flex-direction:column;align-items:center;gap:12px"><button class="okbtn art" id="mResume">繼續營業</button><div class="pgh"><button class="okbtn ghost" id="mHow">玩法說明</button><button class="okbtn ghost" id="mRestart">重新開始</button><button class="okbtn ghost" id="mMenu">選擇關卡</button></div></div>`);
   $$('mResume').onclick=resumeGame;$$('mHow').onclick=()=>{sfx('tick');openHow()};$$('mRestart').onclick=()=>{hideModal();start(LK)};$$('mMenu').onclick=()=>{hideModal();openMenu(true)}}
 function resumeGame(){hideModal();if(G==='play'&&!MENU_OPEN){PAUSE=false;bgmResume()}}
 function showModal(kind,html){MODAL=kind;$$('mcard').innerHTML=html;$$('modal').classList.remove('hide');sfx('tick')}
