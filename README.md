@@ -1,23 +1,58 @@
-# 章魚燒屋 · Takoyaki House
+# 🐙 章魚燒屋 Takoyaki House
 
-© EuDDDDD. All rights reserved.
+在夜市小攤當老闆，倒麵糊、加配料、翻面、淋醬，照客人的收據做出一盒完美的章魚燒！
 
-倒麵糊、加配料、翻翻翻！在客人生氣前烤出完美的章魚燒的網頁小遊戲。打開瀏覽器就能玩，不用下載。
+👉 **立即遊玩：https://euddddd.github.io/takoyaki/**
 
-A little web game: pour the batter, add fillings, flip flip flip — grill perfect takoyaki before your customers lose patience. Plays right in your browser, no download needed.
+---
 
-▶ 玩玩看 Play：https://euddddd.github.io/takoyaki/
+## 玩法
 
-更多作品 More works：[Eu的百寶屋](https://eu-workshop.carrd.co)
+1. **倒麵糊**：點「麵糊」，再點空格倒麵糊（按住拖曳可以一次倒好幾格）
+2. **加配料**：選配料碗，點麵糊加料，點幾下就放幾份
+3. **看熟度、翻面**：格子右上的讀條跑滿就能用竹籤翻面，出現「!」就快焦了
+4. **夾到舟皿**：兩面都烤好後點兩下（電腦可按右鍵）夾到舟皿
+5. **淋醬料**：點醬料瓶淋上章魚燒醬、美乃滋、柴魚片、海苔粉
+6. **照收據上菜**：顆數、配料、醬料都對了就按「上菜！」
 
-## 免費遊玩 Free to play
+營業中還會遇到醉漢鬧事、檯面油膩、貓咪偷吃、突然停電等突發事件！
 
-遊戲可免費遊玩，不收集任何個人資料。本 repo 的程式碼與素材僅供此遊戲使用，未經同意，禁止轉載、修改、重新發布或用於其他用途。
+## 模式
 
-Free to play, no personal data collected. The code and assets in this repository are for this game only. Do not repost, modify, redistribute, or reuse them without permission.
+| 模式 | 說明 |
+|---|---|
+| 簡單 | 6 位客人，客人很有耐心 |
+| 中等 | 8 位客人，最後一位是魔王 |
+| 困難 | 10 位客人，魔王常出沒、耐心少 |
+| 地獄 | 10 位客人全是魔王，偶爾來超級魔王 |
+| 無限模式 | 3 顆愛心，撐到失敗為止 |
+| 自由烤 | 沒有客人、沒有時間，盡情發揮創意！ |
 
-## 音樂 Music
+## 快捷鍵（電腦）
 
-店內背景音樂來自 [OpenTracks（原 DOVA-SYNDROME）](https://opentracks.com/)，作曲：Yuli（Yuli Audio Craft），依 OpenTracks 音源使用授權使用，著作權屬原作者所有。音樂已編碼為 `bgm.dat`，僅供遊戲內播放。
+| 按鍵 | 功能 |
+|---|---|
+| Z | 麵糊 |
+| X | 竹籤 |
+| C | 丟掉 |
+| 1～9 | 配料 |
+| A | 倒滿 |
+| 空白鍵 | 拉發電機（停電時） |
+| Esc | 暫停 |
 
-In-game background music from OpenTracks (formerly DOVA-SYNDROME), composed by Yuli (Yuli Audio Craft), used under the OpenTracks license. Copyright belongs to the composer. The track is encoded as `bgm.dat` for in-game playback only.
+## 小提醒
+
+- 支援電腦與手機，手機請橫向遊玩。
+- iPhone 無法全螢幕，建議用 Safari 的「分享 → 加入主畫面」再打開來玩。
+- 最佳紀錄與音量設定只存在你自己的瀏覽器裡，不會上傳任何資料。
+
+## 使用素材
+
+- **背景音樂**：OpenTracks（舊 DOVA-SYNDROME）免費素材，版權屬於原作者。
+- **字型**：[霞鶩漫黑 LXGW Marker Gothic](https://github.com/lxgw/LxgwMarkerGothic)，依 SIL Open Font License 1.1 授權使用（見 `OFL.txt`）。
+
+## 版權
+
+遊戲設計與程式 © 2026 EuDDDDD，請勿轉載或重新發布。
+
+更多作品：[Eu的百寶屋](https://eu-workshop.carrd.co)
