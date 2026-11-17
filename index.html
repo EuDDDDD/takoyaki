@@ -990,7 +990,7 @@ function drawFeed(dt){for(let i=FEED.length-1;i>=0;i--){const f=FEED[i];f.t+=dt;
   ctx.restore()}}
 
 // ---------- pan actions ----------
-function actType(h){if(tool==='trash')return h.st==='empty'?'none':'trash';if(h.st==='empty')return 'pour';if(h.st==='batter'&&TOPNAME[tool])return 'top';return 'flip'}
+function actType(h){if(tool==='trash')return h.st==='empty'?'none':'trash';if(h.st==='empty')return tool==='pour'?'pour':'none';if(h.st==='batter'&&TOPNAME[tool])return 'top';return 'flip'}
 let tipT=0;const once=(m)=>{const n=performance.now();if(n-tipT>1500){tipT=n;toast(m)}};
 function doAct(h,ty,first){
   if(ty==='pour'){resetHole(h);h.st='batter';h.k=rand(.9,1.1);sfx('pour')}

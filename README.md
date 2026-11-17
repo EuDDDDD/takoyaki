@@ -48,7 +48,7 @@
 
 ## 使用素材
 
-- **背景音樂**：OpenTracks（舊 DOVA-SYNDROME）免費素材，版權屬於原作者。
+- **背景音樂**：[OpenTracks（舊 DOVA-SYNDROME）- みんなでお出かけ（Yuli）](https://opentracks.com/zh-tw/bgm/detail/23485)，免費素材，版權屬於原作者。
 - **字型**：[霞鶩漫黑 LXGW Marker Gothic](https://github.com/lxgw/LxgwMarkerGothic)，依 SIL Open Font License 1.1 授權使用（見 `OFL.txt`）。
 
 ## 版權
