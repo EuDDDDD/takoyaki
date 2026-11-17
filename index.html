@@ -279,7 +279,7 @@ function hit(px,py){return holes.find(h=>((px-h.x)/(h.r*1.05))**2+((py-h.y)/(h.r
 const PAINT=[];let BOAT=null,painting=null;
 const BOAT_POLY=[[30,55],[130,22],[320,26],[510,22],[610,55],[590,100],[560,116],[530,132],[480,145],[400,150],[320,152],[240,150],[160,145],[110,132],[80,116],[50,93]];
 function boatPath(){const B=BOAT;ctx.beginPath();BOAT_POLY.forEach(([px,py],i)=>{const x=B.cx-B.BW/2+px*B.BW/640,y=B.BY+py*B.BH/211;i?ctx.lineTo(x,y):ctx.moveTo(x,y)});ctx.closePath();(B.balls||[]).forEach(([x,y,r])=>{ctx.moveTo(x+r*1.12,y);ctx.arc(x,y,r*1.12,0,Math.PI*2,false);ctx.closePath()})}
-function inBoat(x,y){if(!BOAT)return false;boatPath();return ctx.isPointInPath(x,y)}
+function inBoat(x,y){if(!BOAT)return false;boatPath();return ctx.isPointInPath(x*RS,y*RS)}
 const BR={mayo:{d:10,gap:.28,solid:1},flake:{d:20,gap:.55},nori:{d:12,gap:.9}};
 function addPaint(x,y){const t=painting.t,b=BR[t],last=painting.last;
   const step=b.d*b.gap;if(last){const dx=x-last[0],dy=y-last[1],L=Math.hypot(dx,dy);if(L<step)return;const n=Math.floor(L/step);for(let i=1;i<=n;i++){const px=last[0]+dx*i/n,py=last[1]+dy*i/n;PAINT.push({t,x:px+(b.solid?0:(Math.random()-.5)*b.d*.6),y:py+(b.solid?0:(Math.random()-.5)*b.d*.6),rot:Math.random()*6.28,ph:Math.random()*6.28,stroke:painting.id})}}
