@@ -325,9 +325,9 @@ let last=performance.now(),T=0;
 
 function update(dt){if(dt<=0)return;
   holes.forEach(h=>{
-    if(h.st==='batter'){h.fill=Math.min(1,h.fill+dt*6);h.cookA=Math.min(2.2,h.cookA+dt*(h.cookA<.35?.044:.12)*heat*h.k*(h.cookA>1?.45:1))}
+    if(h.st==='batter'){h.fill=Math.min(1,h.fill+dt*(COARSE?6:2.2));h.cookA=Math.min(2.2,h.cookA+dt*(h.cookA<.35?.044:.12)*heat*h.k*(h.cookA>1?.45:1))}
     if(h.st==='ball'){
-      if(h.rolling){h.roll+=dt*5.5;if(h.roll>=1){h.rolling=0;h.roll=0;h.side=h.side==='A'?'B':'A'}}
+      if(h.rolling){h.roll+=dt*(COARSE?5.5:2.6);if(h.roll>=1){h.rolling=0;h.roll=0;h.side=h.side==='A'?'B':'A'}}
       // the side facing down cooks
       const sl=v=>v>1?.45:1;if(h.side==='A')h.cookB=Math.min(2.2,h.cookB+dt*.12*heat*h.k*sl(h.cookB));else h.cookA=Math.min(2.2,h.cookA+dt*.12*heat*h.k*sl(h.cookA))
     }
