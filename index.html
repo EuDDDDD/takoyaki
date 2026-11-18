@@ -554,7 +554,7 @@ function doneBadge(h){
   const x=h.x+h.r*.78,y=h.y-h.r*.62,R=11.5;
   ctx.save();ctx.translate(x,y);
   if(Math.max(dn,up)>1.4){ctx.restore();return}
-  if(Math.max(dn,up)>1.3){const burnt=false,sc=1+Math.max(0,Math.sin(T*(burnt?4:8)))*.2;ctx.scale(sc,sc);
+  if(dn>1.3){const burnt=false,sc=1+Math.max(0,Math.sin(T*(burnt?4:8)))*.2;ctx.scale(sc,sc);
     ctx.fillStyle='rgba(0,0,0,.35)';ctx.beginPath();ctx.arc(0,1.5,R+1,0,7);ctx.fill();ctx.fillStyle=burnt?'#8a1f14':'#e8602a';ctx.beginPath();ctx.arc(0,0,R,0,7);ctx.fill();ctx.strokeStyle='rgba(255,255,255,.9)';ctx.lineWidth=2;ctx.stroke();
     ctx.fillStyle='#fff';ctx.font='17px Marker,sans-serif';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText('!',0,1);ctx.textBaseline='alphabetic';ctx.restore();return}
   const ST=bat?[[0,.35,'#fff0b0'],[.35,.8,'#ffb84a'],[.8,1.3,'#6fd16a']]:[[0,.8,'#ffb84a'],[.8,1.3,'#6fd16a']];
