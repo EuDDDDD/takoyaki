@@ -233,6 +233,20 @@ canvas#c{touch-action:none!important}
  #modal .pgh .okbtn{font-size:20px!important;padding:.4em 1.1em!important}
  #mcard:has(.pgh){width:min(94vw,560px)!important}
 }
+/* how-to slides: never wider than the track (fixes the previous page peeking in) */
+.htrack>.hs{flex:0 0 100%!important;width:100%;min-width:0;max-width:100%;overflow:hidden}
+@media (max-height:560px){
+ .hs{grid-template-columns:52% minmax(0,1fr)!important}
+ #modal .about{font-size:13px!important;line-height:1.55!important;margin:4px 0 8px!important}
+ #modal .stamp{transform:rotate(-14deg) scale(.75)!important;transform-origin:top right;top:8px!important;right:8px!important}
+ #modal .stars{font-size:24px!important;margin:0!important}
+ #modal .dash{margin:5px 0!important}#modal .line{margin:2px 2px!important;font-size:15px!important}#modal .line.big{font-size:17px!important}
+ #modal .rhead{font-size:11px!important}
+ #modal .row2:has(#mAgain){flex-wrap:nowrap;gap:10px;align-items:center}
+ #modal .okbtn.art{width:200px!important;font-size:22px!important}
+ #modal #mMenu2{font-size:19px!important;padding:.4em 1.2em!important}
+}
+#modal .sh,#howto .hsh{zoom:var(--uiz,1)}
 </style></head><body>
 <div id="rotate"><div class="ph"></div><div>請把手機轉成橫向<br><small style="font-size:15px;opacity:.75">章魚燒屋要橫著玩喔！</small></div></div>
 <div id="title"><div id="rain"></div><button class="titleInfo" id="titleInfo" title="關於這個遊戲">i</button><div class="logoWrap"><div class="logo"><span>章</span><span>魚</span><span>燒</span><span>屋</span></div></div><div class="logoSub">TAKOYAKI HOUSE</div>
@@ -252,7 +266,8 @@ canvas#c{touch-action:none!important}
 <script>
 const cv=document.getElementById('c'),ctx=cv.getContext('2d'),FW=1280,FH=720,W=960,H=600;
 const COARSE=matchMedia('(pointer:coarse)').matches;let RS=1;function fitCanvas(){const w=cv.getBoundingClientRect().width||1280,k=Math.max(1,Math.min(COARSE?1.25:2,w*(devicePixelRatio||1)/1280));if(Math.abs(k-RS)>.01||cv.width!==Math.round(1280*k)){RS=k;cv.width=Math.round(1280*k);cv.height=Math.round(720*k)}}
-addEventListener('resize',fitCanvas);setTimeout(fitCanvas,0);
+addEventListener('resize',fitCanvas);
+function fitUI(){const z=COARSE?1:Math.max(1,Math.min(1.5,Math.min(innerHeight/760,innerWidth/1350)));document.documentElement.style.setProperty('--uiz',z)}addEventListener('resize',fitUI);fitUI();setTimeout(fitCanvas,0);
 const PS=1,TX=0,TY=0;
 const IMG={};['tako_bg.webp','tako_pan.webp','p_trash.webp','p_flip.webp','p_pour.webp','b_mochi.webp','b_shrimp.webp','b_corn.webp','b_tenkasu.webp','b_ginger.webp','b_negi.webp','b_cabbage.webp','b_tako.webp','b_cheese.webp','ty1.webp','ov_sauce.webp','ov_mayo.webp','ov_flake.webp','ov_nori.webp','ty2.webp','ty3.webp','ty4.webp','ty5.webp','ty6.webp','boat.webp','ev_drunk.webp','ev_oil.webp','ev_cat.webp','ev_gen.webp','ev_handle.webp','ui_arrow.webp','ui_restart.webp','ic_sauce.webp','ic_mayo.webp','ic_flake.webp','ic_nori.webp','ui_coin.webp','ui_pause.webp','ui_menu.webp','ui_vol.webp','c01.webp','c02.webp','c03.webp','c04.webp','c05.webp','c06.webp','c07.webp','c08.webp','c09.webp','c10.webp','c11.webp','c12.webp','b01.webp','b02.webp','b03.webp','b04.webp','b05.webp','b06.webp','s01.webp','s02.webp','s03.webp','s04.webp','s05.webp','s06.webp','knob_base.webp','knob_cap.webp','br_sauce.webp','br_mayo.webp','br_flake.webp','br_nori.webp','fl1.webp','fl2.webp','fl3.webp','fl4.webp','fl5.webp','fl6.webp','t_tako.webp','t_cabbage.webp','t_negi.webp','t_ginger.webp','t_tenkasu.webp','t_cheese.webp','t_corn.webp','t_shrimp.webp','t_mochi.webp','face_happy.webp','face_mid.webp','face_angry.webp','boat_front.webp','s_nori.webp','s_flake.webp','s_mayo.webp','s_sauce.webp'].forEach(f=>{IMG[f]=new Image()});
 // load the game art after the title / menu art so the first screen appears quickly
@@ -326,13 +341,13 @@ let strokeId=0,sauceAnim=0;
 // ---------- simulation ----------
 let last=performance.now(),T=0;
 
-function update(dt){if(dt<=0)return;
+function update(dt){if(dt<=0)return;const hm=heat<.8?.2:heat; // small heat: slow but steady
   holes.forEach(h=>{
-    if(h.st==='batter'){h.fill=Math.min(1,h.fill+dt*(COARSE?6:2.2));h.cookA=Math.min(2.2,h.cookA+dt*(h.cookA<.35?.044:.12)*heat*h.k*(h.cookA>1?.45:1))}
+    if(h.st==='batter'){h.fill=Math.min(1,h.fill+dt*(COARSE?6:2.2));h.cookA=Math.min(2.2,h.cookA+dt*(h.cookA<.35?.044:.12)*hm*h.k*(h.cookA>1?.45:1))}
     if(h.st==='ball'){
       if(h.rolling){h.roll+=dt*(COARSE?5.5:2.6);if(h.roll>=1){h.rolling=0;h.roll=0;h.side=h.side==='A'?'B':'A'}}
       // the side facing down cooks
-      const sl=v=>v>1?.45:1;if(h.side==='A')h.cookB=Math.min(2.2,h.cookB+dt*.12*heat*h.k*sl(h.cookB));else h.cookA=Math.min(2.2,h.cookA+dt*.12*heat*h.k*sl(h.cookA))
+      const sl=v=>v>1?.45:1;if(h.side==='A')h.cookB=Math.min(2.2,h.cookB+dt*.12*hm*h.k*sl(h.cookB));else h.cookA=Math.min(2.2,h.cookA+dt*.12*hm*h.k*sl(h.cookA))
     }
   });
 }
@@ -897,10 +912,10 @@ function goFull(){const el=document.documentElement,rq=el.requestFullscreen||el.
 const rand=(a,b)=>a+Math.random()*(b-a),ri=n=>Math.floor(Math.random()*n),pick=a=>a[ri(a.length)];
 const SAUCES=[['sauce','章魚燒醬'],['mayo','美乃滋'],['flake','柴魚片'],['nori','海苔粉']];
 const LEVELS={
- easy:  {label:'簡單',total:6,target:100,pat:1.3,n:[3,5],k:[1,2],spawn:[16,24],angry:.10,wrong:.05,minA:5,minW:3,ev:{gap:[55,80],mash:4,spots:4,cat:5.2,t:7,gen:1},boss:i=>false},
+ easy:  {label:'簡單',total:6,target:100,pat:1.1,n:[3,5],k:[1,2],spawn:[16,24],angry:.10,wrong:.05,minA:5,minW:3,ev:{gap:[55,80],mash:4,spots:4,cat:5.2,t:7,gen:1},boss:i=>false},
  normal:{label:'中等',total:8,target:200,pat:1,n:[3,6],k:[1,3],spawn:[13,20],angry:.15,wrong:.10,minA:10,minW:5,ev:{gap:[40,60],mash:6,spots:5,cat:4.5,t:6.5,gen:2},boss:i=>i===8},
  hard:  {label:'困難',total:10,target:320,pat:.8,n:[4,7],k:[2,3],spawn:[10,16],angry:.20,wrong:.15,minA:15,minW:8,ev:{gap:[30,45],mash:7,spots:6,cat:3.8,t:6,gen:3},boss:i=>i%4===0||i===10},
- hell:  {label:'地獄',total:10,target:620,pat:.95,n:[8,8],k:[3,4],spawn:[15,22],angry:.20,wrong:.15,minA:15,minW:8,ev:{gap:[22,34],mash:7,spots:7,cat:3.2,t:5.5,gen:3},boss:i=>true,superChance:.2},
+ hell:  {label:'地獄',total:10,target:620,pat:.72,n:[8,8],k:[3,4],spawn:[15,22],angry:.20,wrong:.15,minA:15,minW:8,ev:{gap:[22,34],mash:7,spots:7,cat:3.2,t:5.5,gen:3},boss:i=>true,superChance:.2},
  endless:{label:'無限模式',total:Infinity,pat:1.05,n:[3,6],k:[1,3],spawn:[13,20],angry:.15,wrong:.10,minA:10,minW:5,hearts:3,ev:{gap:[45,65],mash:6,spots:5,cat:4.5,t:6.5,gen:2},boss:i=>i>=4&&(i%6===0||Math.random()<.08)},
  free:  {label:'自由烤',free:1}
 };
@@ -992,7 +1007,7 @@ function serve(){
     score=Math.round(20*cs+35*doneAvg+30*fs+15*(rl.length?sOk/rl.length:1))-wrongPen;
     if(m>c.n&&!issues.length)issues.push('多送了 '+(m-c.n)+' 顆？老闆人真好！');
   }else score=Math.round(70*doneAvg+Math.min(Object.keys(cnt).length,4)*5+(SAUCES.filter(q=>hasAny(q[0])).length>=2?10:0));
-  const pp=c?c.pat:1,waitPen=pp<.6?Math.round((.6-pp)/.6*30):0;
+  const pp=c?c.pat:1,waitPen=pp<.5?Math.round((.5-pp)/.5*30):0;
   if(waitPen>=10)issues.push(pick(['等好久喔…肚子都餓扁了','下次可以快一點嗎？','終於來了…']));
   score=Math.max(0,Math.min(100,score-burntPen-rawPen-waitPen));
   const stars=score>=90?3:score>=70?2:score>=45?1:0;
